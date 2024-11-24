@@ -5,17 +5,21 @@ This code is licensed under MIT license (see LICENSE for details)
 
 @author: FilmFolio
 """
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_login import LoginManager
 from flask_socketio import SocketIO
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
 db = SQLAlchemy(app)
+
 bcrypt = Bcrypt(app)
 socket = SocketIO(app)
 login_manager = LoginManager(app)
@@ -26,6 +30,7 @@ cors = CORS(app, resources={
         "origins": "*"
     }
 })
+migrate = Migrate(app, db)
 
 #pylint: disable=wrong-import-position
 from src import routes
