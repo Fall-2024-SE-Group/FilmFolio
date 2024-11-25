@@ -4,6 +4,7 @@
 Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps you organize, track, and explore movies you love.
 
 [![Open Issues](https://img.shields.io/github/issues/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/issues)
+![GitHub Release](https://img.shields.io/github/release/Fall-2024-SE-Group/FilmFolio.svg)](https://github.com/Fall-2024-SE-Group/FilmFolio/releases)
 [![Closed Issues](https://img.shields.io/github/issues-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/issues?q=is%3Aissue+is%3Aclosed)
 [![Open PRs](https://img.shields.io/github/issues-pr/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls)
 [![Closed PRs](https://img.shields.io/github/issues-pr-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls?q=is%3Apr+is%3Aclosed)
