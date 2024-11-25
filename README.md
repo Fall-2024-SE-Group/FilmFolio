@@ -13,9 +13,7 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 
 [![Contributors](https://img.shields.io/github/contributors/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/graphs/contributors)
 [![Repo Size](https://img.shields.io/github/repo-size/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio)
-[![Release Date](https://img.shields.io/github/release-date/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/releases)
-![Black](https://img.shields.io/github/workflow/status/Fall-2024-SE-Group/FilmFolio/black)
-![flake8](https://img.shields.io/github/workflow/status/Fall-2024-SE-Group/FilmFolio/flake8)
+
 
 
 
