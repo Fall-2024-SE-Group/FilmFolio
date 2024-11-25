@@ -5,7 +5,7 @@ This code is licensed under MIT license (see LICENSE for details)
 
 @author: FilmFolio
 """
-<<<<<<< HEAD
+
 from flask import Flask 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -17,7 +17,6 @@ from flask_socketio import SocketIO
 
 
 app = Flask(__name__)
->>>>>>> 38ee9baa60d52f7efac66fc7cb68fa0dfe43c6c2
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app) 
