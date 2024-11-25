@@ -7,14 +7,6 @@ This code is licensed under MIT license (see LICENSE for details)
 """
 <<<<<<< HEAD
 from flask import Flask 
-from flask_sqlalchemy import SQLAlchemy #used for integrating SQLite
-from flask_bcrypt import Bcrypt #used for hashing passwords
-from flask_cors import CORS #allows the server to handle requests from different origins
-from flask_login import LoginManager  #manages user sessions in Flask
-from flask_socketio import SocketIO #for real time communication
-
-app = Flask(__name__) #creates an instance
-=======
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
