@@ -1,6 +1,22 @@
 # <i> FilmFolio📽️: Your Destination for Movie Recommendations </i>
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://gitHub.com/sE-Group-AR/FilmFolio/graphs/commit-activity) [![Contributors Activity](https://img.shields.io/github/commit-activity/m/sE-Group-AR/FilmFolio)](https://github.com/sE-Group-AR/FilmFolio/pulse) [![GitHub issues](https://img.shields.io/github/issues/sE-Group-AR/FilmFolio.svg)](https://github.com/sE-Group-AR/FilmFolio/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/sE-Group-AR/FilmFolio.svg)](https://github.com/sE-Group-AR/FilmFolio/issues?q=is%3Aissue+is%3Aclosed) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/sE-Group-AR/FilmFolio) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT) [![Unittest](https://github.com/sE-Group-AR/FilmFolio/actions/workflows/unittest.yml/badge.svg?branch=master&event=push)](https://github.com/sE-Group-AR/FilmFolio/actions/workflows/unittest.yml) [![codecov](https://codecov.io/gh/sE-Group-AR/FilmFolio/graph/badge.svg?token=0XN6K2DMGS)](https://codecov.io/gh/sE-Group-AR/FilmFolio) [![GitHub release](https://img.shields.io/github/release/sE-Group-AR/FilmFolio.svg)](https://GitHub.com/sE-Group-AR/FilmFolioreleases/) [![StyleCheck: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint) [![HitCount](https://hits.dwyl.com/sE-Group-AR/FilmFolio.svg)](https://hits.dwyl.com/sE-Group-AR/FilmFolio) ![GitHub contributors](https://img.shields.io/github/contributors/sE-Group-AR/FilmFolio) ![GitHub Release Date - Published_At](https://img.shields.io/github/release-date/sE-Group-AR/FilmFolio) ![GitHub repo size](https://img.shields.io/github/repo-size/sE-Group-AR/FilmFolio) [![Black](https://github.com/sE-Group-AR/FilmFolio/actions/workflows/black.yml/badge.svg)](https://github.com/sE-Group-AR/FilmFolio/actions/workflows/black.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/260d558f17ae5e1027e5/maintainability)](https://codeclimate.com/github/sE-Group-AR/FilmFolio/maintainability) [![GitHub closed issues by-label](https://img.shields.io/github/issues-closed-raw/sE-Group-AR/FilmFolio/bug?color=green&label=Squished%20bugs)](https://github.com/sE-Group-AR/FilmFolio/issues?q=is%3Aissue+label%3Abug+is%3Aclosed) ![Discord](https://img.shields.io/discord/1143966088695124110) 
-  
+# FilmFolio
+
+Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps you organize, track, and explore movies you love.
+
+[![Open Issues](https://img.shields.io/github/issues/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/issues?q=is%3Aissue+is%3Aclosed)
+[![Open PRs](https://img.shields.io/github/issues-pr/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls)
+[![Closed PRs](https://img.shields.io/github/issues-pr-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls?q=is%3Apr+is%3Aclosed)
+[![License](https://img.shields.io/github/license/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/blob/main/LICENSE)
+[![Codecov](https://img.shields.io/codecov/c/github/Fall-2024-SE-Group/FilmFolio)](https://codecov.io/gh/Fall-2024-SE-Group/FilmFolio)
+[![Release](https://img.shields.io/github/release/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/releases)
+[![Pylint](https://img.shields.io/badge/pylint-9.99%2F10-green)](https://www.pylint.org/)
+[![HitCount](https://img.shields.io/github/views-count/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/Fall-2024-SE-Group/FilmFolio)](https://codeclimate.com/github/Fall-2024-SE-Group/FilmFolio)
+[![Contributors](https://img.shields.io/github/contributors/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/graphs/contributors)
+[![Repo Size](https://img.shields.io/github/repo-size/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio)
+[![Release Date](https://img.shields.io/github/release-date/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/releases)
+
 
   
 <img src="https://github.com/sE-Group-AR/FilmFolio/blob/master/asset/movies-list.gif" alt="drawing" style="width:1000px;"/>
