@@ -6,6 +6,8 @@ This code is licensed under MIT license (see LICENSE for details)
 """
 from flask_login import UserMixin
 from src import db, login_manager
+from datetime import datetime
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -26,6 +28,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     reviews = db.relationship('Review', backref='user_author', lazy=True)
+    # New fields for profile picture, bio, and favorite genres
+    profile_picture = db.Column(db.String(200), nullable=True)  # URL or file path
+    bio = db.Column(db.Text, nullable=True)
+    favorite_genres = db.Column(db.String(200), nullable=True)  # Comma-separated genres
 
     def __repr__(self):
         return f" {self.first_name} {self.last_name}"
@@ -59,4 +65,21 @@ class Review(db.Model):
 
     def __repr__(self):
         return f"{self.user_id} - {self.movieId}"
-    
+
+class Friendship(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    friend_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(20), nullable=False)  # "pending", "accepted"
+
+    def __repr__(self):
+        return f"Friendship between {self.user_id} and {self.friend_id}"
+
+class WatchHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.movieId'), nullable=False)
+    watched_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Watch History entry for user {self.user_id} and movie {self.movie_id}"
