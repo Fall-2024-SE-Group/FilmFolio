@@ -388,7 +388,7 @@ def new_movies():
         return render_template('new_movies.html', movies=movie_data, user=current_user)
     return render_template('new_movies.html', show_message=True,
                            message='Error fetching movie data')
-  @app.route("/trends", methods=["GET"])
+@app.route("/trends", methods=["GET"])
   
 def trends_page():
     """
