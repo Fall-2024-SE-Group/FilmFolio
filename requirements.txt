@@ -17,6 +17,7 @@ Flask-Cors==4.0.0
 Flask-Login==0.6.3
 Flask-Testing==0.8.1
 flask-socketio
+Flask-Migrate
 pandas
 numpy
 Flask-SQLAlchemy==3.1.1

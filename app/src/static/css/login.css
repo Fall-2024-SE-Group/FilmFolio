@@ -21,3 +21,12 @@
     background-color: #f8d7da;
     color: #721c24;
 }
+
+/* Custom styles for the 'Remember Me' checkbox */
+.form-check-input {
+    border-color: #000; /* Set border color to black */
+}
+
+.form-check-label {
+    color: #000; /* Black color for the label text */
+}

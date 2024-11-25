@@ -1,64 +1,74 @@
-"""
-Copyright (c) 2024 Anchita Ramani, Meet Patel, Abhinav Jami
-This code is licensed under MIT license (see LICENSE for details)
-
-@author: FilmFolio
-"""
 import os
-import pandas as pd
-#from flask import jsonify, request, render_template
+import requests
+from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS
 
+app = Flask(__name__)
+CORS(app)
 
-app_dir = os.path.dirname(os.path.abspath(__file__))
-code_dir = os.path.dirname(app_dir)
-project_dir = os.path.dirname(code_dir)
-
+TMDB_API_KEY = 'your_tmdb_api_key'  # Replace with your actual TMDB API key
+TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
 class Search:
     """
     Search feature for landing page
     """
 
-    df = pd.read_csv(project_dir + "/data/movies.csv")
-
     def __init__(self):
         pass
 
-    def starts_with(self, word):
+    def search_tmdb(self, query):
         """
-        Function to check movie prefix
+        Function to fetch movie data from TMDB
+        """
+        url = f"{TMDB_BASE_URL}/search/movie"
+        params = {
+            'api_key': TMDB_API_KEY,
+            'query': query,
+            'language': 'en-US',
+            'page': 1,
+            'include_adult': 'false'
+        }
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            return response.json()['results']
+        else:
+            return []
+
+    def starts_with(self, word, movie_data):
+        """
+        Function to check movie prefix from TMDB data
         """
         n = len(word)
         res = []
         word = word.lower()
-        for x in self.df["title"]:
-            curr = x.lower()
-            if curr[:n] == word:
-                res.append(x)
+        for movie in movie_data:
+            title = movie['title'].lower()
+            if title[:n] == word:
+                res.append(movie)
         return res
 
-    def anywhere(self, word, visited_words):
+    def anywhere(self, word, visited_words, movie_data):
         """
-        Function to check visited words
+        Function to check visited words from TMDB data
         """
         res = []
         word = word.lower()
-        for x in self.df["title"]:
-            if x not in visited_words:
-                curr = x.lower()
-                if word in curr:
-                    res.append(x)
+        for movie in movie_data:
+            if movie['title'] not in visited_words:
+                title = movie['title'].lower()
+                if word in title:
+                    res.append(movie)
         return res
 
     def results(self, word):
         """
         Function to serve the result render
         """
-        starts_with = self.starts_with(word)
-        visited_words = set()
-        for x in starts_with:
-            visited_words.add(x)
-        anywhere = self.anywhere(word, visited_words)
+        movie_data = self.search_tmdb(word)
+        starts_with = self.starts_with(word, movie_data)
+        visited_words = set([movie['title'] for movie in starts_with])
+        anywhere = self.anywhere(word, visited_words, movie_data)
         starts_with.extend(anywhere)
         return starts_with
 
@@ -67,7 +77,6 @@ class Search:
         Function to get top 10 results
         """
         return self.results(word)[:10]
-
 
 #if __name__ == "__main__":
 #    app.run()

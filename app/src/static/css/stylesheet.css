@@ -9,7 +9,7 @@ html, body {
   }
   
   .landing-page {
-    background-image: url("/static/images/image.jpg");
+    background-image: url("/static/image.jpg");
     background-size: cover;
     color: azure !important;
     margin-left: 200px; /* Space for the navbar */

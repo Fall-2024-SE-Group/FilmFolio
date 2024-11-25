@@ -1,112 +1,227 @@
+{% extends 'shared/layout.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Include stylesheets and scripts -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
-    <title>PopcornPicks</title>
-    <link rel="icon" href="{{ url_for('static', filename='Popcorn-icon.png') }}" />
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark topNavBar fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">PopcornPicks🍿</a>
-            <button type="button" id="signOut" onclick="signOut()" class="btn btn-outline-light">Sign Out</button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </nav>
-    <div class="container" style="margin-top: 60px;">
-        <div class="heading1 text-center mb-4">
-            <h2>🎬 Pick a Movie! 🎬</h2>
-            <h6 class="tipHeader text-muted">✨Tip: Select up to 5 movies to get a tailored watchlist✨</h6>
-        </div>
+{% block maincontent %}
+<div class="container" style="margin-top: 60px;">
+    <!-- Previous flash messages code remains the same -->
+    
+    <div class="heading1 text-center mb-4">
+        <h2>🎬 Pick a Movie! 🎬</h2>
+        <h6 class="tipHeader text-muted">✨ Tip: Select up to 5 movies to get a tailored watchlist ✨</h6>
+    </div>
 
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <h3>Selected Movie(s):</h3>
-                <div class="input-group mb-3">
-                    <input class="form-control" type="search" placeholder="Search for a Movie" aria-label="Search" id="searchBox" />
-                    <button class="btn btn-primary" id="predict">Predict</button>
-                </div>
-                <ul class="list-group" id="selectedMovies"></ul>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Search Movies</h3>
+            <div class="input-group mb-3">
+                <input class="form-control" type="search" placeholder="Search for a Movie" aria-label="Search" id="movieSearch" />
+                <button class="btn btn-primary" id="searchBtn">Search</button>
             </div>
-            <div class="col-md-5 offset-md-1">
-                <h3>Your Recents:</h3>
-                <ul class="list-group" id="recentMovies"></ul>
-            </div>
+            
+            <h3 class="mt-4">Selected Movie(s):</h3>
+            <ul class="list-group" id="selectedMovies"></ul>
+            
+            <button class="btn btn-success mt-3" id="predictBtn">Get Recommendations</button>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Recommended Movies:</h2>
-                <ul class="list-group" id="predictedMovies"></ul>
-                <div class="mt-3 text-center">
-                    <button class="btn btn-primary" id="feedback" data-toggle="modal" data-target="#exampleModalCenter">Give Feedback</button>
-                </div>
-            </div>
+        <div class="col-md-6">
+            <h3>Your Recents:</h3>
+            <ul class="list-group" id="recentMovies"></ul>
         </div>
     </div>
 
-    <div class="d-none" id="loader">
-        <div class="spinner-border" role="status">
-            <span class="sr-only"></span>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Recommended Movies:</h2>
+            <ul class="list-group" id="predictedMovies"></ul>
         </div>
     </div>
+</div>
 
-    <div class="container my-4">
-        <input class="c-checkbox" type="checkbox" id="checkbox" />
+<!-- Loading Spinner -->
+<div class="position-fixed top-50 start-50 translate-middle d-none" id="loader">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
+</div>
 
-    <div class="container">
-        <div id="dataCollected" style="display: none;">
-            <h1 class="text-center">Thanks!! Your response was stored.</h1>
-            <button id="refreshPage" class="btn btn-danger mx-auto">Take another attempt</button>
-        </div>
-    </div>
-
-    <div class="text-center my-4">
-        <button id="backToLanding" onclick="backToLandingPage()" class="btn btn-primary">Return home</button>
-    </div>
-
-    <script>
-        window.onload = function () {
-            getRecentMovies();
-        }
-
-        function addRecentMovie(i) {
-            var li = document.createElement("li");
-            li.appendChild(document.createTextNode(i));
-            li.className = 'list-group-item';
-            $("#recentMovies").append(li);
-        }
-
-        function getRecentMovies() {
+<script>
+$(document).ready(function() {
+    let selectedMovies = [];
+    
+    // Initialize autocomplete for movie search which will used to return a JSON array of movies 
+    $("#movieSearch").autocomplete({
+        source: function(request, response) {
+        //    Sends an AJAX POST request to the /search endpoint with the search term (request.term).
             $.ajax({
-                type: 'GET',
-                url: '/getRecentMovies',
-                contentType: "application/json;charset=UTF-8",
-                success: function(response) {
-                    response.forEach(element => {
-                        addRecentMovie(element.name);
-                    });
+                url: "/search",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    query: request.term
+                }),
+                success: function(data) {
+                    // Transform the data for autocomplete
+                    response($.map(data, function(item) {
+                        return {
+                            label: item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : ''),
+                            value: item.title,
+                            movie: item
+                        };
+                    }));
                 },
-                error: function(error) {
-                    console.error("Error fetching recent movies:", error);
+                error: function(xhr, status, error) {
+                    console.error("Search error:", error);
+                    response([]);
                 }
             });
+        },
+        minLength: 2,
+        select: function(event, ui) {
+            if (selectedMovies.length >= 5) {
+                alert("You can only select up to 5 movies");
+                return false;
+            }
+            
+            if (!selectedMovies.includes(ui.item.value)) {
+                selectedMovies.push(ui.item.value);
+                updateSelectedMoviesList();
+            }
+            
+            // Clear the search input after selection
+            setTimeout(function() {
+                $("#movieSearch").val('');
+            }, 0);
+            
+            return false;
         }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+    }).autocomplete("instance")._renderItem = function(ul, item) {
+        return $("<li>")
+            .append("<div>" + item.label + "</div>")
+            .appendTo(ul);
+    };
+
+    function updateSelectedMoviesList() {
+        const $selectedList = $("#selectedMovies");
+        $selectedList.empty();
+        
+        selectedMovies.forEach(function(title) {
+            $("<li>")
+                .addClass("list-group-item d-flex justify-content-between align-items-center")
+                .append(
+                    $("<span>").text(title),
+                    $("<button>")
+                        .addClass("btn btn-sm btn-danger")
+                        .text("Remove")
+                        .click(function() {
+                            removeMovie(title);
+                        })
+                )
+                .appendTo($selectedList);
+        });
+    }
+
+    function removeMovie(title) {
+        selectedMovies = selectedMovies.filter(m => m !== title);
+        updateSelectedMoviesList();
+    }
+
+    // Get recommendations button click handler
+    $("#predictBtn").click(function() {
+        if (selectedMovies.length === 0) {
+            alert("Please select at least one movie");
+            return;
+        }
+
+        $("#loader").removeClass("d-none");
+
+        $.ajax({
+            url: "/predict",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                movie_list: selectedMovies
+            }),
+            success: function(data) {
+                const predictions = data;
+                displayPredictions(predictions);
+            },
+            error: function(xhr, status, error) {
+                console.error("Prediction error:", error);
+                alert("Error getting movie recommendations. Please try again.");
+            },
+            complete: function() {
+                $("#loader").addClass("d-none");
+            }
+        });
+    });
+
+    function displayPredictions(predictions) {
+    const $predictedList = $("#predictedMovies");
+    $predictedList.empty();
+
+    if (!Array.isArray(predictions)) {
+        console.error("Invalid predictions format:", predictions);
+        alert("Error: Recommendations are not in the expected format.");
+        return;
+    }
+
+    predictions.forEach(function(movie) {
+        // Create list item for each recommended movie
+        const $listItem = $("<li>")
+            .addClass("list-group-item d-flex align-items-start");
+
+        // Add movie poster image
+        const $poster = $("<img>")
+            .attr("src", movie.poster_path)
+            .attr("alt", movie.title)
+            .addClass("img-thumbnail me-3")
+            .css({ width: "50px", height: "75px" });
+
+        // Add movie details
+        const $details = $("<div>")
+            .append($("<h5>").text(movie.title))
+            .append($("<p>").text(movie.genres))
+            .append($("<small>").text(`Release Date: ${movie.release_date}`))
+            .append($("<p>").text(movie.overview));
+
+        // Combine poster and details into list item
+        $listItem.append($poster).append($details);
+        $predictedList.append($listItem);
+    });
+}
+
+    // Load recent movies on page load
+    function loadRecentMovies() {
+        $("#loader").removeClass("d-none");
+
+        $.ajax({
+            url: "/getRecentMovies",
+            type: "GET",
+            success: function(data) {
+                const $recentList = $("#recentMovies");
+                $recentList.empty();
+                
+                data.forEach(function(movie) {
+                    $("<li>")
+                        .addClass("list-group-item")
+                        .text(movie.title)
+                        .appendTo($recentList);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching recent movies:", error);
+            },
+            complete: function() {
+                $("#loader").addClass("d-none");
+            }
+        });
+    }
+
+
+    // Load recent movies when page loads
+    loadRecentMovies();
+});
+</script>
+
+{% endblock %}

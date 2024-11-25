@@ -1,10 +1,3 @@
-<!--
-Copyright (c) 2024 Abhinav Jami, Meet Patel, Anchita Ramani
-This code is licensed under MIT license (see LICENSE for details)
-
-@author: FilmFolio
--->
-
 <!DOCTYPE html>
 <html lang="eng">
   <head>
@@ -29,17 +22,20 @@ This code is licensed under MIT license (see LICENSE for details)
     <link
       rel="shortcut icon"
       type="image/x-icon"
-      href="{{ url_for('static', filename='popcorn.ico') }}"
+      href="{{ url_for('static', filename='Popcorn-icon.png') }}"
     />
     <link
       rel="icon"
-      href="{{ url_for('static', filename='images/Popcorn-icon.png') }}"
+      href="{{ url_for('static', filename='Popcorn-icon.png') }}"
     />
     {% block extracss %}{% endblock %}
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script
       src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
       crossorigin="anonymous"
@@ -49,10 +45,36 @@ This code is licensed under MIT license (see LICENSE for details)
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     {% block extrajs %}{% endblock %}
   </head>
   <body class="landing-page">
+    <!-- Global Background Image -->
+    <style>
+      /* Apply background image globally */
+      body {
+        background-image: url('{{ url_for("static", filename="image.jpg") }}') !important;
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        padding-top: 70px;
+        color: white;
+      }
+
+      /* Ensure the navbar doesn't overlap content */
+      .navbar {
+        z-index: 1000; /* Make sure navbar is on top of the content */
+      }
+
+      /* Optional: Add padding to the content area */
+      .container {
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.6); /* Optional: dark background for readability */
+        border-radius: 10px; /* Optional: rounded corners */
+      }
+    </style>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark topNavBar fixed-top">
       <div class="container-fluid flex-column">
         <a class="navbar-brand" href="{{ url_for('landing_page') }}">FilmFolio</a>
@@ -72,6 +94,7 @@ This code is licensed under MIT license (see LICENSE for details)
         {% endif %}
       </div>
     </nav>
+
     {% block maincontent %}{% endblock %}
   </body>
   {% block extra_html_scripts %}{% endblock %}
