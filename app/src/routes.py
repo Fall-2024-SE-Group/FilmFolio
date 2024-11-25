@@ -9,6 +9,7 @@ import json
 import os
 import requests
 
+from werkzeug.utils import secure_filename
 from flask import render_template, url_for, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_socketio import emit
@@ -16,7 +17,14 @@ from dotenv import load_dotenv
 from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review
+from src.models import User, Movie, Review,Friendship, WatchHistory
+
+UPLOAD_FOLDER = 'app/static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 load_dotenv()
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
@@ -30,6 +38,65 @@ def landing_page():
     if current_user.is_authenticated:
         return redirect(url_for('search_page'))
     return render_template("landing_page.html")
+
+@app.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    """
+    Update the user's profile with bio, favorite genres, and profile picture.
+    """
+    bio = request.form.get("bio", current_user.bio)
+    favorite_genres = request.form.get("favorite_genres", current_user.favorite_genres)
+    profile_picture = request.files.get("profile_picture")
+
+    # Save profile picture if uploaded
+    if profile_picture and allowed_file(profile_picture.filename):
+        filename = secure_filename(profile_picture.filename)
+        profile_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        profile_picture.save(profile_path)
+        # Store relative path in the database (relative to static/uploads folder)
+        current_user.profile_picture = f"uploads/{filename}"
+
+    # Update bio and favorite genres
+    current_user.bio = bio
+    current_user.favorite_genres = favorite_genres
+
+    # Commit changes to the database
+    db.session.commit()
+
+    # Return a success message
+    return jsonify({
+        "success": "Profile updated successfully",
+        "profile_picture": f"/static/{current_user.profile_picture}"
+    })
+
+@app.route("/send_friend_request", methods=["POST"])
+@login_required
+def send_friend_request():
+    """
+    Send a friend request to another user.
+    """
+    data = json.loads(request.data)
+    friend_username = data.get("friend_username")
+    friend = User.query.filter_by(username=friend_username).first()
+
+    if not friend:
+        return jsonify({"error": "User not found"}), 404
+
+    # Create a pending friendship request
+    friendship = Friendship(user_id=current_user.id, friend_id=friend.id, status="pending")
+    db.session.add(friendship)
+    db.session.commit()
+    return jsonify({"success": f"Friend request sent to {friend_username}!"})
+@app.route("/watch_history", methods=["GET"])
+@login_required
+def watch_history():
+    """
+    Get the user's movie watch history.
+    """
+    history = WatchHistory.query.filter_by(user_id=current_user.id).all()
+    watched_movies = [{"movie_title": Movie.query.get(entry.movie_id).title, "watched_at": entry.watched_at} for entry in history]
+    return jsonify(watched_movies)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -309,3 +376,4 @@ def new_movies():
         return render_template('new_movies.html', movies=movie_data, user=current_user)
     return render_template('new_movies.html', show_message=True,
                            message='Error fetching movie data')
+
