@@ -19,9 +19,9 @@ from src.search import Search
 from src.item_based import recommend_for_new_user
 from src.models import User, Movie, Review,Friendship, WatchHistory
 
-UPLOAD_FOLDER = 'app/static/uploads'
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'asset')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -45,29 +45,41 @@ def update_profile():
     """
     Update the user's profile with bio, favorite genres, and profile picture.
     """
+    # Get the bio and favorite genres from the form, or use current values if not provided
     bio = request.form.get("bio", current_user.bio)
     favorite_genres = request.form.get("favorite_genres", current_user.favorite_genres)
+    
+    # Handle profile picture upload
     profile_picture = request.files.get("profile_picture")
-
-    # Save profile picture if uploaded
+    
+    # Only save profile picture if it is uploaded and is of an allowed type
     if profile_picture and allowed_file(profile_picture.filename):
+        # Secure and save the file in the specified upload folder
         filename = secure_filename(profile_picture.filename)
         profile_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        # Ensure the folder exists
+        os.makedirs(os.path.dirname(profile_path), exist_ok=True)
+        
+        # Save the file
         profile_picture.save(profile_path)
-        # Store relative path in the database (relative to static/uploads folder)
+        
+        # Store relative path in the database (relative to the static/uploads folder)
         current_user.profile_picture = f"uploads/{filename}"
-
+    
     # Update bio and favorite genres
     current_user.bio = bio
     current_user.favorite_genres = favorite_genres
 
-    # Commit changes to the database
+    # Commit the changes to the database
     db.session.commit()
 
-    # Return a success message
+    # Return a success message with updated profile picture path
     return jsonify({
         "success": "Profile updated successfully",
-        "profile_picture": f"/static/{current_user.profile_picture}"
+        "profile_picture": f"/static/{current_user.profile_picture}",
+        "bio": current_user.bio,
+        "favorite_genres": current_user.favorite_genres
     })
 
 @app.route("/send_friend_request", methods=["POST"])
@@ -376,4 +388,22 @@ def new_movies():
         return render_template('new_movies.html', movies=movie_data, user=current_user)
     return render_template('new_movies.html', show_message=True,
                            message='Error fetching movie data')
+  @app.route("/trends", methods=["GET"])
+  
+def trends_page():
+    """
+    Renders the trends page with the latest and trendy movies.
+    """
+    # Fetch trending movies from an API or database
+    trending_movies = fetch_trending_movies()
+    return render_template("trends.html", movies=trending_movies)
 
+def fetch_trending_movies():
+    """
+    Fetch the trending movies from The Movie Database (TMDB) API.
+    """
+    url = f"https://api.themoviedb.org/3/trending/movie/week?api_key={TMDB_API_KEY}"
+    response = requests.get(url, timeout=10)
+    data = response.json()
+    return data.get("results", [])
+    
