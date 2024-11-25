@@ -8,8 +8,6 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 [![Open PRs](https://img.shields.io/github/issues-pr/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls)
 [![Closed PRs](https://img.shields.io/github/issues-pr-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls?q=is%3Apr+is%3Aclosed)
 [![License](https://img.shields.io/github/license/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/blob/main/LICENSE)
-[![Codecov](https://img.shields.io/codecov/c/github/Fall-2024-SE-Group/FilmFolio)](https://codecov.io/gh/Fall-2024-SE-Group/FilmFolio)
-[![Release](https://img.shields.io/github/release/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/releases)
 [![Pylint](https://img.shields.io/badge/pylint-9.99%2F10-green)](https://www.pylint.org/)
 [![HitCount](https://img.shields.io/github/views-count/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/Fall-2024-SE-Group/FilmFolio)](https://codeclimate.com/github/Fall-2024-SE-Group/FilmFolio)
