@@ -17,15 +17,61 @@ This code is licensed under MIT license (see LICENSE for details)
 
 {% block extrajs %}
   <script src="{{ url_for('static', filename='js/profile.js') }}"></script>  
-{% endblock %}
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Open Edit Profile Modal
+      document.getElementById("editProfileBtn").addEventListener("click", () => {
+        document.getElementById("editProfileModal").style.display = "block";
+      });
+
+      // Close Modal
+      document.querySelector(".close").addEventListener("click", () => {
+        document.getElementById("editProfileModal").style.display = "none";
+      });
+
+      // Profile Update Form Submission
+      document.getElementById("updateProfileForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const response = await fetch("/update_profile", {
+          method: "POST",
+          body: formData
+        });
+        if (response.ok) {
+          alert("Profile updated successfully!");
+          location.reload();
+        } else {
+          alert("Error updating profile!");
+        }
+      });
+
+      // Send Friend Request
+      document.getElementById("friendRequestForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const friendUsername = e.target.friend_username.value;
+        const response = await fetch("/send_friend_request", {
+          method: "POST",
+          body: JSON.stringify({ friend_username: friendUsername }),
+          headers: { "Content-Type": "application/json" }
+        });
+        if (response.ok) {
+          alert("Friend request sent!");
+          e.target.reset();
+        } else {
+          alert("Error sending friend request!");
+        }
+      });
+    });
+  </script>
+{% endblock %}
 
 {% block maincontent %}
 <div class="container" style="margin-top:8%">
   <div class="row">
     <div class="col-md-12 heading1 pt-2">
       <!-- Heading for picking a movie -->
-      <h2><center>{{ user}}'s Profile Page</center></h2>
+      <h2><center>{{ user }}'s Profile Page</center></h2>
       <h6 class="tipHeader">✨Your personalised profile page!✨</h6>
     </div>
     <div class="col-md-12">
@@ -34,15 +80,37 @@ This code is licensed under MIT license (see LICENSE for details)
           <h2 class="profile-title">User Details</h2>
         </div>
         <div class="card-body">
+          <img 
+            src="{{ user.profile_picture or url_for('static', filename='img/default_profile.png') }}" 
+            alt="Profile Picture" 
+            class="profile-picture" />
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Username: {{user.username}} </li>
-            <li class="list-group-item">Email: {{user.email}}</li>
-            <li class="list-group-item">First Name: {{user.first_name}}</li>
-            <li class="list-group-item">Last Name: {{user.last_name}}</li>
+            <li class="list-group-item">Username: {{ user.username }} </li>
+            <li class="list-group-item">Email: {{ user.email }}</li>
+            <li class="list-group-item">First Name: {{ user.first_name }}</li>
+            <li class="list-group-item">Last Name: {{ user.last_name }}</li>
+            <li class="list-group-item">Bio: {{ user.bio or "No bio yet" }}</li>
+            <li class="list-group-item">Favorite Genres: {{ user.favorite_genres or "Not set" }}</li>
           </ul>
+          <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
         </div>
       </div>
     </div>
+
+    <!-- Profile Editing Modal -->
+    <div id="editProfileModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="updateProfileForm" enctype="multipart/form-data">
+          <h4>Edit Profile</h4>
+          <textarea name="bio" placeholder="Enter bio...">{{ user.bio }}</textarea>
+          <input type="text" name="favorite_genres" value="{{ user.favorite_genres }}" placeholder="Favorite Genres (comma-separated)">
+          <input type="file" name="profile_picture" accept="image/*">
+          <button type="submit" class="btn btn-success">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-12" style="display: flex; justify-content: center; margin-top: 2%">
@@ -60,10 +128,10 @@ This code is licensed under MIT license (see LICENSE for details)
             <div class="row no-gutters">
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">{{review.title}}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{{review.runtime}} minutes</h6>
-                  <p class="card-text"><strong>Movie Overview : </strong> {{review.overview}}</p>
-                  <p class="card-text"><strong>Your Review : </strong>{{review.review_text}}</p>
+                  <h5 class="card-title">{{ review.title }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{ review.runtime }} minutes</h6>
+                  <p class="card-text"><strong>Movie Overview : </strong> {{ review.overview }}</p>
+                  <p class="card-text"><strong>Your Review : </strong>{{ review.review_text }}</p>
                   <a target="_blank" href="{{ imdb_link }}" class="btn btn-primary">Check out IMDb Link</a>
                 </div>                
               </div>
@@ -71,11 +139,33 @@ This code is licensed under MIT license (see LICENSE for details)
                 <div class="imdbId">{{ review.imdb_id }}</div>
               </div>
               <div class="row">
-                <div class="card-footer text-muted">Genres : {{review.genres}}</div>  
+                <div class="card-footer text-muted">Genres : {{ review.genres }}</div>  
               </div>
             </div>
         </div>
         {% endfor %}
+      </div>
+    </div>
+
+    <!-- Friends Section -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h2>Friends</h2>
+        </div>
+        <div class="card-body">
+          <ul id="friendsList">
+            {% for friend in friends %}
+              <li>{{ friend.username }} - <a href="/profile/{{ friend.id }}">View Profile</a></li>
+            {% else %}
+              <li>No friends yet. Start connecting!</li>
+            {% endfor %}
+          </ul>
+          <form id="friendRequestForm">
+            <input type="text" name="friend_username" placeholder="Enter username">
+            <button type="submit" class="btn btn-primary">Send Friend Request</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
