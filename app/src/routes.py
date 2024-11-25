@@ -282,7 +282,7 @@ def new_movies():
     """
         API to fetch new movies
     """
-    # Replace YOUR_TMDB_API_KEY with your actual TMDb API key
+
     tmdb_api_key = TMDB_API_KEY
     endpoint = 'https://api.themoviedb.org/3/movie/upcoming'
 

@@ -4,10 +4,10 @@ This code is licensed under MIT license (see LICENSE for details)
 
 @author: FilmFolio
 """
-from flask_login import UserMixin
+from flask_login import UserMixin #usermixin - Provides default implementations for user authentication
 from src import db, login_manager
 
-@login_manager.user_loader
+@login_manager.user_loader # Retrieves the user record from the database based on the ID
 def load_user(user_id):
     """
         Function to get current user
