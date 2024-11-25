@@ -19,7 +19,7 @@ from src.search import Search
 from src.item_based import recommend_for_new_user
 from src.models import User, Movie, Review,Friendship, WatchHistory
 
-app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'asset')
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/images/')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
@@ -64,8 +64,8 @@ def update_profile():
         # Save the file
         profile_picture.save(profile_path)
         
-        # Store relative path in the database (relative to the static/uploads folder)
-        current_user.profile_picture = f"uploads/{filename}"
+        # Store relative path in the database (relative to the static/images folder)
+        current_user.profile_picture = f"images/{filename}"
     
     # Update bio and favorite genres
     current_user.bio = bio
@@ -77,10 +77,11 @@ def update_profile():
     # Return a success message with updated profile picture path
     return jsonify({
         "success": "Profile updated successfully",
-        "profile_picture": f"/static/{current_user.profile_picture}",
+        "profile_picture": f"/static/images/{current_user.profile_picture}",
         "bio": current_user.bio,
         "favorite_genres": current_user.favorite_genres
     })
+
 
 @app.route("/send_friend_request", methods=["POST"])
 @login_required

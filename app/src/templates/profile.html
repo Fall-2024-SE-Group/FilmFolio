@@ -14,7 +14,6 @@ This code is licensed under MIT license (see LICENSE for details)
     href="{{ url_for('static', filename='css/profile.css') }}"
   />
 {% endblock %}
-
 {% block extrajs %}
   <script src="{{ url_for('static', filename='js/profile.js') }}"></script>  
 
@@ -80,8 +79,9 @@ This code is licensed under MIT license (see LICENSE for details)
           <h2 class="profile-title">User Details</h2>
         </div>
         <div class="card-body">
+          <!-- Profile Image with conditional URL -->
           <img 
-            src="{{ user.profile_picture or url_for('static', filename='img/default_profile.png') }}" 
+            src="{{ url_for('static', filename=user.profile_picture) if user.profile_picture else url_for('static', filename='default_profile_picture.png') }}" 
             alt="Profile Picture" 
             class="profile-picture" />
           <ul class="list-group list-group-flush">
@@ -110,6 +110,8 @@ This code is licensed under MIT license (see LICENSE for details)
         </form>
       </div>
     </div>
+  </div>
+</div>
 
     <div class="col-md-12">
       <div class="row">
