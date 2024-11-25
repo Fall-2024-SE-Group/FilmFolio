@@ -9,6 +9,7 @@ import json
 import os
 import requests
 
+from werkzeug.utils import secure_filename
 from flask import render_template, url_for, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_socketio import emit
@@ -16,10 +17,17 @@ from dotenv import load_dotenv
 from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review
+from src.models import User, Movie, Review,Friendship, WatchHistory
+
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'asset')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 load_dotenv()
-TMDB_API_KEY = "82be1210519bcb327ddfbcce69248e51"
+TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
 @app.route("/", methods={"GET"})
 @app.route("/home", methods={"GET"})
@@ -30,6 +38,77 @@ def landing_page():
     if current_user.is_authenticated:
         return redirect(url_for('search_page'))
     return render_template("landing_page.html")
+
+@app.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    """
+    Update the user's profile with bio, favorite genres, and profile picture.
+    """
+    # Get the bio and favorite genres from the form, or use current values if not provided
+    bio = request.form.get("bio", current_user.bio)
+    favorite_genres = request.form.get("favorite_genres", current_user.favorite_genres)
+    
+    # Handle profile picture upload
+    profile_picture = request.files.get("profile_picture")
+    
+    # Only save profile picture if it is uploaded and is of an allowed type
+    if profile_picture and allowed_file(profile_picture.filename):
+        # Secure and save the file in the specified upload folder
+        filename = secure_filename(profile_picture.filename)
+        profile_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        # Ensure the folder exists
+        os.makedirs(os.path.dirname(profile_path), exist_ok=True)
+        
+        # Save the file
+        profile_picture.save(profile_path)
+        
+        # Store relative path in the database (relative to the static/uploads folder)
+        current_user.profile_picture = f"uploads/{filename}"
+    
+    # Update bio and favorite genres
+    current_user.bio = bio
+    current_user.favorite_genres = favorite_genres
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    # Return a success message with updated profile picture path
+    return jsonify({
+        "success": "Profile updated successfully",
+        "profile_picture": f"/static/{current_user.profile_picture}",
+        "bio": current_user.bio,
+        "favorite_genres": current_user.favorite_genres
+    })
+
+@app.route("/send_friend_request", methods=["POST"])
+@login_required
+def send_friend_request():
+    """
+    Send a friend request to another user.
+    """
+    data = json.loads(request.data)
+    friend_username = data.get("friend_username")
+    friend = User.query.filter_by(username=friend_username).first()
+
+    if not friend:
+        return jsonify({"error": "User not found"}), 404
+
+    # Create a pending friendship request
+    friendship = Friendship(user_id=current_user.id, friend_id=friend.id, status="pending")
+    db.session.add(friendship)
+    db.session.commit()
+    return jsonify({"success": f"Friend request sent to {friend_username}!"})
+@app.route("/watch_history", methods=["GET"])
+@login_required
+def watch_history():
+    """
+    Get the user's movie watch history.
+    """
+    history = WatchHistory.query.filter_by(user_id=current_user.id).all()
+    watched_movies = [{"movie_title": Movie.query.get(entry.movie_id).title, "watched_at": entry.watched_at} for entry in history]
+    return jsonify(watched_movies)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -283,7 +362,7 @@ def new_movies():
         API to fetch new movies
     """
     # Replace YOUR_TMDB_API_KEY with your actual TMDb API key
-    tmdb_api_key = "e547e17d4e91f3e62a571655cd1ccaff"
+    tmdb_api_key = TMDB_API_KEY
     endpoint = 'https://api.themoviedb.org/3/movie/upcoming'
 
     # Set up parameters for the request
@@ -309,8 +388,8 @@ def new_movies():
         return render_template('new_movies.html', movies=movie_data, user=current_user)
     return render_template('new_movies.html', show_message=True,
                            message='Error fetching movie data')
-
-@app.route("/trends", methods=["GET"])
+  @app.route("/trends", methods=["GET"])
+  
 def trends_page():
     """
     Renders the trends page with the latest and trendy movies.
@@ -327,3 +406,4 @@ def fetch_trending_movies():
     response = requests.get(url, timeout=10)
     data = response.json()
     return data.get("results", [])
+    
