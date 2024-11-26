@@ -18,6 +18,7 @@ from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
 from src.models import User, Movie, Review,Friendship, WatchHistory
+from markupsafe import escape
 
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/images/')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -256,11 +257,13 @@ def show_connection(data):
     """
     print('received message: ' + data)
 
+
 @socket.on('message')
 def broadcast_message(data):
     """
-        Distributes messages sent to the server to all clients in real time
+    Distributes messages sent to the server to all clients in real-time.
     """
+    print(f"Received message: {data['msg']} from {data['username']}")
     emit('message', {'username': data['username'], 'msg': data['msg']}, broadcast=True)
 
 @app.route("/getPosterURL", methods=["GET"])

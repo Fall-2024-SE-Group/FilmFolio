@@ -11,30 +11,71 @@
 
 {% block maincontent %}
 <div class="container" style="margin-top: 60px;" id="centralDivLanding">
-  <div class="heading1"><br><br><br><br>
-    <h2><center>🎬 FilmFolio📽️: Chat with others about Movies! 🎬</center></h2>
-  </div>
-    <div class="card d-flex flex-column">
-    <div class="card-header text-secondary">
-        Live Movie Chat
+    <div class="heading1"><br><br><br><br>
+      <h2><center>🎬 FilmFolio: Chat with others about Movies! 🎬</center></h2>
     </div>
-    <ul id="message_list" class="list-group flex-grow-1 overflow-auto"></ul>
-    <form id="form" class="form-inline" action="" onsubmit="submiter(); return false;">
-        <div class="form-group">
-            <input id="input" class="form-control mr-2" autocomplete="off" />
-        </div>
-        <button type="submit" class="btn btn-primary ms-2">Send</button>
-    </form>
+    <div class="card d-flex flex-column">
+      <div class="card-header text-secondary">
+          Live Movie Chat
+      </div>
+      <ul id="message_list" class="list-group flex-grow-1 overflow-auto"></ul>
+      <form id="form" class="form-inline" action="" onsubmit="submiter(); return false;">
+          <div class="form-group">
+              <input id="input" class="form-control mr-2" autocomplete="off" placeholder="Type your message"/>
+          </div>
+          <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </div>
 </div>
 
-</div>
-    <script>function submiter() {
-        /*function needs to be in here the user can be sent over to the js*/
-    /* Connects directly to when someone clicks the button to send a message */
-    var msg = document.getElementById('input');
-    console.log(msg)
-    socket.emit('message', { username: '{{user}}', msg: msg.value });
-    msg.value = ''; /* removes whats in your input form */
-    return false; /* makes sure the web page doesn't just refresh */
-}</script>
+<script>
+    // Initialize socket connection
+    var socket = io.connect();
+
+    // When the user submits a message
+    function submiter() {
+        var msg = document.getElementById('input');
+        var messageList = document.getElementById('message_list');
+        
+        if (msg.value.trim() !== '') {  // Check if the message is not empty
+            console.log('Message to send:', msg.value);
+
+            // Add the sent message immediately to the message list (for the user)
+            var newMessage = document.createElement('li');
+            newMessage.className = 'list-group-item';
+            newMessage.textContent = `${'{{user}}'}: ${msg.value}`;
+            messageList.appendChild(newMessage);
+
+            // Emit the message to the server
+            socket.emit('message', { username: '{{user}}', msg: msg.value });
+
+            // Clear the input field after sending the message
+            msg.value = '';  
+        }
+        return false;
+    }
+
+    // Listen for incoming messages (from all users)
+    socket.on('message', function(data) {
+        console.log('New message received:', data);
+
+        // Escape the message content to prevent HTML injection
+        var safeMsg = data.msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        var messageList = document.getElementById('message_list');
+        var newMessage = document.createElement('li');
+        newMessage.className = 'list-group-item';
+        newMessage.textContent = `${data.username}: ${safeMsg}`;
+        messageList.appendChild(newMessage);
+
+        // Scroll to the latest message
+        messageList.scrollTop = messageList.scrollHeight;
+    });
+
+    // Debugging connection
+    socket.on('connect', function() {
+        console.log("Connected to server!");
+    });
+</script>
+
 {% endblock %}
