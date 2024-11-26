@@ -9,7 +9,7 @@
 * Helping the community by delivering a better product.
 * Help us find solutions to computationally/memory-intensive processes
 * Help us to scale the system to a larger database
-* To run the email notifier feature - make your own Gmail account and password and replace the same in the utils.py(function: send_email_to_user(recipient_email, categorized_data))
+
 
 ### Our Table Of Contents
 ```
@@ -40,9 +40,7 @@
 │   ├── email.png
 │   ├── execution.gif
 │   ├── group12.png
-│   ├── header_display.png
-│   ├── system_architecture.svg
-│   └── SystemArch.png
+│   └── header_display.png
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── data
@@ -87,7 +85,7 @@ Any suggested enhancements like adding new features or improving existing functi
 
 ## Code of Conduct:
 
-* Please go through the [Code of Conduct](https://github.com/tanmaypardeshi/PopcornPicks/blob/master/CODE_OF_CONDUCT.md) before you begin contributing. This project and everyone participating in it is governed by the Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to popcornpicks504@gmail.com.
+* Please go through the [Code of Conduct](https://github.com/Fall-2024-SE-Group/FilmFolio/blob/master/CODE_OF_CONDUCT.md) before you begin contributing. This project and everyone participating in it is governed by the Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to popcornpicks504@gmail.com.
 
 ## Pull Request Submission Guidelines
 
