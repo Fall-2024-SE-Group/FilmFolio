@@ -406,8 +406,8 @@ def get_messages():
     sent_messages = Message.query.filter_by(sender_username=username).all()
 
     return jsonify({
-        'received': [{'sender': msg.sender_username, 'content': msg.content, 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in received_messages],
-        'sent': [{'recipient': msg.recipient_username, 'content': msg.content, 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in sent_messages]
+        'received': [{'id':msg.id, 'sender': msg.sender_username, 'content': msg.content, 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in received_messages],
+        'sent': [{'id':msg.id,'recipient': msg.recipient_username, 'content': msg.content, 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in sent_messages]
     })
 
 @app.route('/send_message', methods=['POST'])
@@ -436,3 +436,19 @@ def send_message():
     db.session.commit()
 
     return jsonify({'message': 'Message sent successfully'}), 200
+
+@app.route('/delete_message/<int:message_id>', methods=['DELETE'])
+@login_required
+def delete_message(message_id):
+    message = Message.query.get(message_id)
+    if not message:
+        return jsonify({'error': 'Message not found'}), 404
+    
+    # Only allow the sender or recipient to delete the message
+    if message.sender_username != current_user.username and message.recipient_username != current_user.username:
+        return jsonify({'error': 'You do not have permission to delete this message'}), 403
+    
+    db.session.delete(message)
+    db.session.commit()
+    
+    return jsonify({'message': 'Message deleted successfully'}), 200
