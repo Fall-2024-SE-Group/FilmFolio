@@ -10,14 +10,16 @@ import os
 import requests
 
 from werkzeug.utils import secure_filename
-from flask import render_template, url_for, redirect, request, jsonify
+from flask import render_template, url_for, redirect, request, jsonify, flash
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_socketio import emit
 from dotenv import load_dotenv
 from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review,Friendship, WatchHistory
+from src.models import User, Movie, Review, WatchHistory, Message
+from markupsafe import escape
+from datetime import datetime
 
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/images/')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -83,24 +85,6 @@ def update_profile():
     })
 
 
-@app.route("/send_friend_request", methods=["POST"])
-@login_required
-def send_friend_request():
-    """
-    Send a friend request to another user.
-    """
-    data = json.loads(request.data)
-    friend_username = data.get("friend_username")
-    friend = User.query.filter_by(username=friend_username).first()
-
-    if not friend:
-        return jsonify({"error": "User not found"}), 404
-
-    # Create a pending friendship request
-    friendship = Friendship(user_id=current_user.id, friend_id=friend.id, status="pending")
-    db.session.add(friendship)
-    db.session.commit()
-    return jsonify({"success": f"Friend request sent to {friend_username}!"})
 @app.route("/watch_history", methods=["GET"])
 @login_required
 def watch_history():
@@ -256,11 +240,13 @@ def show_connection(data):
     """
     print('received message: ' + data)
 
+
 @socket.on('message')
 def broadcast_message(data):
     """
-        Distributes messages sent to the server to all clients in real time
+    Distributes messages sent to the server to all clients in real-time.
     """
+    print(f"Received message: {data['msg']} from {data['username']}")
     emit('message', {'username': data['username'], 'msg': data['msg']}, broadcast=True)
 
 @app.route("/getPosterURL", methods=["GET"])
@@ -409,4 +395,44 @@ def fetch_trending_movies():
     response = requests.get(url, timeout=10)
     data = response.json()
     return data.get("results", [])
-    
+
+@app.route('/get_messages', methods=['GET'])
+@login_required
+def get_messages():
+    username = current_user.username
+
+    # Retrieve messages where the user is either sender or recipient
+    received_messages = Message.query.filter_by(recipient_username=username).all()
+    sent_messages = Message.query.filter_by(sender_username=username).all()
+
+    return jsonify({
+        'received': [{'sender': msg.sender_username, 'content': msg.content, 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in received_messages],
+        'sent': [{'recipient': msg.recipient_username, 'content': msg.content, 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in sent_messages]
+    })
+
+@app.route('/send_message', methods=['POST'])
+@login_required
+def send_message():
+    data = request.get_json()
+    sender_username = current_user.username  # Get the logged-in user's username
+    recipient_username = data.get('recipient_username')
+    content = data.get('content')
+
+    if not recipient_username or not content:
+        return jsonify({'error': 'Recipient and content are required'}), 400
+
+    # Check if recipient exists
+    recipient = User.query.filter_by(username=recipient_username).first()
+    if not recipient:
+        return jsonify({'error': 'Recipient not found'}), 404
+
+    # Save the message
+    message = Message(
+        sender_username=sender_username,
+        recipient_username=recipient_username,
+        content=content
+    )
+    db.session.add(message)
+    db.session.commit()
+
+    return jsonify({'message': 'Message sent successfully'}), 200
