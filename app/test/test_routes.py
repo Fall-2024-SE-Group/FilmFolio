@@ -21,6 +21,18 @@ def logged_in_user(client):
     client.post('/login', data={"username": "test_user", "password": "test_password"})
     return client
 
+def test_signup(client):
+    data = {
+        "username": "new_user",
+        "first_name": "First",
+        "last_name": "Last",
+        "email": "test@example.com",
+        "password": "password123"
+    }
+    response = client.post("/signup", data=data)
+    assert response.status_code == 302  # Redirect after successful signup
+    assert b"search_page" in response.headers["Location"]
+
 def test_landing_page(client):
     response = client.get("/")
     assert response.status_code == 200
@@ -36,17 +48,7 @@ def test_update_profile(client, logged_in_user):
     assert response.json["bio"] == "New bio"
     assert "success" in response.json
 
-def test_signup(client):
-    data = {
-        "username": "new_user",
-        "first_name": "First",
-        "last_name": "Last",
-        "email": "test@example.com",
-        "password": "password123"
-    }
-    response = client.post("/signup", data=data)
-    assert response.status_code == 302  # Redirect after successful signup
-    assert b"search_page" in response.headers["Location"]
+
 
 
 def test_login(client):
