@@ -81,7 +81,7 @@ This code is licensed under MIT license (see LICENSE for details)
     });
   });
 
-  // Show messages
+  // Function to load messages
   function loadMessages() {
     $.ajax({
       url: '/get_messages',
@@ -91,25 +91,54 @@ This code is licensed under MIT license (see LICENSE for details)
 
         // Populate received messages
         const receivedList = received.map(msg => `
-          <li class="received">
+          <li class="received" data-id="${msg.id}">
             <strong>${msg.sender}:</strong> ${msg.content} <small>(${msg.timestamp})</small>
+            <button class="btn btn-danger delete-btn" data-id="${msg.id}">Read</button>
           </li>
         `).join('');
         $('#receivedMessages').html(receivedList || '<li>No received messages.</li>');
 
         // Populate sent messages
         const sentList = sent.map(msg => `
-          <li class="sent">
+          <li class="sent" data-id="${msg.id}">
             <strong>To ${msg.recipient}:</strong> ${msg.content} <small>(${msg.timestamp})</small>
+            <button class="btn btn-danger delete-btn" data-id="${msg.id}">Delete</button>
           </li>
         `).join('');
         $('#sentMessages').html(sentList || '<li>No sent messages.</li>');
+
+        // Attach event listeners to delete buttons
+        $('.delete-btn').on('click', function () {
+          const messageId = $(this).data('id');
+          console.log('Message ID:', messageId); // Check the message ID being passed
+          if (messageId !== undefined) {
+            deleteMessage(messageId);
+          } else {
+            console.error('No message ID found.');
+          }
+        });
       },
       error: function () {
         alert('Failed to load messages.');
       }
     });
   }
+
+  // Function to delete message
+  function deleteMessage(messageId) {
+    $.ajax({
+      url: `/delete_message/${messageId}`,
+      type: 'DELETE',
+      success: function (response) {
+        alert('Message deleted successfully!');
+        loadMessages(); // Reload the messages after deletion
+      },
+      error: function (xhr) {
+        alert(`Error: ${xhr.responseJSON.error}`);
+      }
+    });
+  }
+
 });
  
   </script>
