@@ -25,6 +25,7 @@
       type="image/x-icon"
       href="{{ url_for('static', filename='popcorn.ico') }}"
     />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link
       rel="icon"
       href="{{ url_for('static', filename='images/Popcorn-icon.png') }}"
@@ -67,6 +68,8 @@
           <a type="button" class="btn btn-outline-success ms-2" href="{{ url_for('login') }}">Login</a>
         {% endif %}
       </div>
+      
+      
     </nav>
     {% block maincontent %}{% endblock %}
   </body>
