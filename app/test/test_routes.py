@@ -5,7 +5,7 @@ import pytest
 
 sys.path.append(os.path.join(os.getcwd(), "app"))
 from src import app, db
-from src.models import Vacancies, User
+from src.models import User
 
 
 @pytest.fixture
