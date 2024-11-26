@@ -48,11 +48,11 @@ jobs:
       run: |
         mysql -h 127.0.0.1 --port 3306 -u root -ptestrootpass < test/test_init.sql
     - name: Running test cases for util
-      run: python test/test_util.py
+      run: python app/test/test_util.py
     - name: Running test cases for predicting
-      run: python test/test_predict.py
+      run: python app/test/test_predict.py
     - name: Running test cases for searching
-      run: python test/test_search.py
+      run: python app/test/test_search.py
     
     
     
