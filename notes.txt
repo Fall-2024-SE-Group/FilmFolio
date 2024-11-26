@@ -1,0 +1,24 @@
+//run the container
+docker run -d -p 8000:8000 filmfolio:latest
+
+
+// find the container id 
+docker ps
+
+//stop the container
+docker stop <container_id_or_name>
+
+
+//restart the container
+docker restart <container_id_or_name>
+
+//viewing container logs
+docker logs <container_id_or_name>
+
+//whenever you make any changes to the code, rebuild the docker image
+docker build -t filmfolio:latest .
+
+//to remove an old container
+docker rm <container_id_or_name>
+
+

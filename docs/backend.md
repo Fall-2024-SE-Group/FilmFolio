@@ -1,24 +1,24 @@
 # Functions Description of the backend
 
-## [app.py](https://github.com/brwali/PopcornPicks/blob/master/src/recommenderapp/app.py)
+## [routes.py]
 
-### login_page()
-**Renders to the login page of the web-app**
+### landing_page()
+**Renders the landing page with the user.**
+
+### update_profile()
+**Updates the user's profile with bio, favorite genres, and profile picture.**
+
+### signup()
+**Renders to the registration page of the web-app and handles the registration part**
+
+### login()
+**Handles logging in the active user**
+
+### logout()
+**Handles signing out the active user**
 
 ### profile_page()
 **Renders to the profile page of the web-app**
-
-### wall_page()
-**Renders to the wall page of the web-app**
-
-### review_page()
-**Renders to the review page of the web-app**
-
-### landing_page()
-**Renders to the landing page of the web-app**
-
-### search_page()
-**Render to the search page of the web-app**
 
 ### predict()
 **Returns movie recommendations on the basis of user-input movies**
@@ -26,53 +26,44 @@
 ### search()
 **Returns top-10 movie searches for an input string in the search box**
 
-### create_acc()
-**Handles creating a new account**
+### chat_page()
+**Renders chat room page**
 
-### signout()
-**Handles signing out the active user**
+### show_connection()
+**Prints out if the connection to the chat page is successful**
 
-### login()
-**Handles logging in the active user**
+### broadcast_message()
+**Distributes messages sent to the server to all clients in real-time**
 
-### friend()
-**Handles adding a new friend**
+### get_poster_url()
+**Retrieve the poster URL for the recommended movie based on IMDb ID.**
 
-### guest()
-**Sets the user to be a guest user**
+### fetch_poster_url()
+**Fetch the poster URL for a movie from The Movie Database (TMDB) API**
 
-### review()
-**Handles the submission of a movie review**
+### post_review()
+**handles the submitting the review**
 
-### wall_posts()
-**Gets the posts for the wall**
+### movie_page()
+**Renders to the movie page. Gets the movies and their reviews**
 
-### recent_movies()
-**Gets the recent movies of the active user**
+### new_movies()
+**Handles the latest movies page**
 
-### recent_friend_movies()
-**Gets the recent movies of a certain friend**
+### trends_page()
+**Handles trends page**
 
-### username()
-**Gets the username of the active user**
+### fetch_trending_movies()
+**Fetch the trending movies from The Movie Database (TMDB) API.**
 
-### get_friend()
-**Gets the friends of the active user**
+### get_messages()
+**Handles loading messages of the current user**
 
-### feedback()
-**Handles user feedback submission**
+### send_message()
+**Handles sent messages of the current user**
 
-### send_mail()
-**Handles user feedback submission and mails the results**
-
-### success()
-**Renders to the success page**
-
-### before_request()
-**Opens the db connection.**
-
-### after_request()
-**Closes the db connection.**
+### delete_message()
+**Handles the deletion of the cure user's messages**
 
 ## [utils.py](https://github.com/brwali/PopcornPicks/blob/master/src/recommenderapp/utils.py)
 

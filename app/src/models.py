@@ -1,9 +1,3 @@
-"""
-Copyright (c) 2024 Anchita Ramani, Meet Patel, Abhinav Jami
-This code is licensed under MIT license (see LICENSE for details)
-
-@author: FilmFolio
-"""
 from flask_login import UserMixin #usermixin - Provides default implementations for user authentication
 from src import db, login_manager
 from datetime import datetime

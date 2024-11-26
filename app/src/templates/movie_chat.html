@@ -47,7 +47,7 @@
             messageList.appendChild(newMessage);
 
             // Emit the message to the server
-            socket.emit('message', { username: '{{user}}', msg: msg.value });
+            // socket.emit('message', { username: '{{user}}', msg: msg.value });
 
             // Clear the input field after sending the message
             msg.value = '';  

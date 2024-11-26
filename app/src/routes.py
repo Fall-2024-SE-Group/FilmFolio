@@ -1,10 +1,3 @@
-"""
-Copyright (c) 2024 Anchita Ramani, Meet Patel, Abhinav Jami
-This code is licensed under MIT license (see LICENSE for details)
-
-@author: FilmFolio
-"""
-
 import json
 import os
 import requests
