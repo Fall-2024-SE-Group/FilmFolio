@@ -1,3 +1,4 @@
+black
 astroid==3.0.1
 gunicorn
 autopep8==2.0.4

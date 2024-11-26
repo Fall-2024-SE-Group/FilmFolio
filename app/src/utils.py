@@ -8,41 +8,43 @@ from email.mime.multipart import MIMEMultipart
 
 import pandas as pd
 
+
 def create_colored_tags(genres):
     """
-        Utitilty function to create colored tags for different
-        movie genres
+    Utitilty function to create colored tags for different
+    movie genres
     """
     # Define colors for specific genres
     genre_colors = {
-        'Musical': '#FF1493',  # DeepPink
-        'Sci-Fi': '#00CED1',  # DarkTurquoise
-        'Mystery': '#8A2BE2',  # BlueViolet
-        'Thriller': '#FF6347',  # Tomato
-        'Horror': '#FF4500',  # OrangeRed
-        'Documentary': '#228B22',  # ForestGreen
-        'Fantasy': '#FFA500',  # Orange
-        'Adventure': '#FFD700',  # Gold
-        'Children': '#32CD32',  # LimeGreen
-        'Film-Noir': '#2F4F4F',  # DarkSlateGray
-        'Comedy': '#FFB500',  # VividYellow
-        'Crime': '#8B0000',  # DarkRed
-        'Drama': '#8B008B',  # DarkMagenta
-        'Western': '#FF8C00',  # DarkOrange
-        'IMAX': '#20B2AA',  # LightSeaGreen
-        'Action': '#FF0000',  # Red
-        'War': '#B22222',  # FireBrick
-        '(no genres listed)': '#A9A9A9',  # DarkGray
-        'Romance': '#FF69B4',  # HotPink
-        'Animation': '#4B0082'  # Indigo
+        "Musical": "#FF1493",  # DeepPink
+        "Sci-Fi": "#00CED1",  # DarkTurquoise
+        "Mystery": "#8A2BE2",  # BlueViolet
+        "Thriller": "#FF6347",  # Tomato
+        "Horror": "#FF4500",  # OrangeRed
+        "Documentary": "#228B22",  # ForestGreen
+        "Fantasy": "#FFA500",  # Orange
+        "Adventure": "#FFD700",  # Gold
+        "Children": "#32CD32",  # LimeGreen
+        "Film-Noir": "#2F4F4F",  # DarkSlateGray
+        "Comedy": "#FFB500",  # VividYellow
+        "Crime": "#8B0000",  # DarkRed
+        "Drama": "#8B008B",  # DarkMagenta
+        "Western": "#FF8C00",  # DarkOrange
+        "IMAX": "#20B2AA",  # LightSeaGreen
+        "Action": "#FF0000",  # Red
+        "War": "#B22222",  # FireBrick
+        "(no genres listed)": "#A9A9A9",  # DarkGray
+        "Romance": "#FF69B4",  # HotPink
+        "Animation": "#4B0082",  # Indigo
     }
     tags = []
     for genre in genres:
-        color = genre_colors.get(genre, '#CCCCCC')  # Default color if not found
+        color = genre_colors.get(genre, "#CCCCCC")  # Default color if not found
         tag = f'<span style="background-color: {color}; color: #FFFFFF; \
             padding: 5px; border-radius: 5px;">{genre}</span>'
         tags.append(tag)
-    return ' '.join(tags)
+    return " ".join(tags)
+
 
 def beautify_feedback_data(data):
     """
@@ -55,33 +57,37 @@ def beautify_feedback_data(data):
 
     # Iterate through the data and categorize movies
     for movie, status in data.items():
-        if status == 'Yet to watch':
+        if status == "Yet to watch":
             yet_to_watch.append(movie)
-        elif status == 'Like':
+        elif status == "Like":
             like.append(movie)
-        elif status == 'Dislike':
+        elif status == "Dislike":
             dislike.append(movie)
 
-
     # Create a category-dictionary of liked, disliked and yet to watch movies
-    categorized_data_dict = {"Liked": like,
-                             "Disliked": dislike, "Yet to Watch": yet_to_watch}
+    categorized_data_dict = {
+        "Liked": like,
+        "Disliked": dislike,
+        "Yet to Watch": yet_to_watch,
+    }
 
     return categorized_data_dict
 
+
 def create_movie_genres(movie_genre_df):
     """
-        Utility function for creating a dictionary for movie-genres mapping
+    Utility function for creating a dictionary for movie-genres mapping
     """
     # Create a dictionary to map movies to their genres
     movie_to_genres = {}
 
     # Iterating on all movies to create the map
     for row in movie_genre_df.iterrows():
-        movie = row[1]['title']
-        genres = row[1]['genres'].split('|')
+        movie = row[1]["title"]
+        genres = row[1]["genres"].split("|")
         movie_to_genres[movie] = genres
     return movie_to_genres
+
 
 def send_email_to_user(recipient_email, categorized_data):
     """
@@ -117,38 +123,45 @@ def send_email_to_user(recipient_email, categorized_data):
                         """
 
     # Email configuration
-    smtp_server = 'smtp.gmail.com'
+    smtp_server = "smtp.gmail.com"
     # Port for TLS
     smtp_port = 587
-    sender_email = 'popcornpicks504@gmail.com'
+    sender_email = "popcornpicks504@gmail.com"
 
     # Use an app password since 2-factor authentication is enabled
-    sender_password = ' '
-    subject = 'Your movie recommendation from PopcornPicks'
+    sender_password = " "
+    subject = "Your movie recommendation from PopcornPicks"
 
     # Create the email message
-    message = MIMEMultipart('alternative')
-    message['From'] = sender_email
-    message['To'] = recipient_email
-    message['Subject'] = subject
+    message = MIMEMultipart("alternative")
+    message["From"] = sender_email
+    message["To"] = recipient_email
+    message["Subject"] = subject
     # Load the CSV file into a DataFrame
-    movie_genre_df = pd.read_csv('../../data/movies.csv')
+    movie_genre_df = pd.read_csv("../../data/movies.csv")
     # Creating movie-genres map
     movie_to_genres = create_movie_genres(movie_genre_df)
     # Create the email message with HTML content
     html_content = email_html_content.format(
-        '\n'.join(f'<li>{movie} \
-            {create_colored_tags(movie_to_genres.get(movie, ["Unknown Genre"]))}</li><br>' \
-            for movie in categorized_data['Liked']),
-        '\n'.join(f'<li>{movie} \
-            {create_colored_tags(movie_to_genres.get(movie, ["Unknown Genre"]))}</li><br>' \
-            for movie in categorized_data['Disliked']),
-        '\n'.join(f'<li>{movie} \
-            {create_colored_tags(movie_to_genres.get(movie, ["Unknown Genre"]))}</li><br>' \
-            for movie in categorized_data['Yet to Watch']))
+        "\n".join(
+            f'<li>{movie} \
+            {create_colored_tags(movie_to_genres.get(movie, ["Unknown Genre"]))}</li><br>'
+            for movie in categorized_data["Liked"]
+        ),
+        "\n".join(
+            f'<li>{movie} \
+            {create_colored_tags(movie_to_genres.get(movie, ["Unknown Genre"]))}</li><br>'
+            for movie in categorized_data["Disliked"]
+        ),
+        "\n".join(
+            f'<li>{movie} \
+            {create_colored_tags(movie_to_genres.get(movie, ["Unknown Genre"]))}</li><br>'
+            for movie in categorized_data["Yet to Watch"]
+        ),
+    )
 
     # Attach the HTML email body
-    message.attach(MIMEText(html_content, 'html'))
+    message.attach(MIMEText(html_content, "html"))
 
     # Connect to the SMTP server
     try:
