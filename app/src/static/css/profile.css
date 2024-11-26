@@ -86,3 +86,292 @@
 .imdbId {
   display: none;
 }
+.profile-picture {
+  width: 100px; /* Set the desired width */
+  height: 100px; /* Set the desired height */
+  object-fit: cover; /* Ensures the image doesn't distort */
+  border-radius: 50%; /* Makes it circular if desired */
+}
+#editProfileModal {
+  font-family: Arial, sans-serif;
+  color: #444; /* Default text color */
+}
+
+/* Modal content container */
+.modal-content {
+  background-color: #f9f9f9; /* Subtle light gray background */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button styling */
+.modal-content .close {
+  font-size: 24px;
+  color: #888;
+  float: right;
+  cursor: pointer;
+}
+.modal-content .close:hover {
+  color: #000;
+}
+
+/* Form heading */
+#editProfileModal h4 {
+  color: #2c3e50; /* Darker blue-gray for the heading */
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+/* Labels */
+#editProfileModal label {
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 5px;
+  color: #555; /* Mid-gray for labels */
+}
+
+/* Input and textarea fields */
+#editProfileModal textarea,
+#editProfileModal input[type="text"],
+#editProfileModal input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333; /* Dark text for input fields */
+}
+
+/* Submit button */
+#editProfileModal .btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#editProfileModal .btn:hover {
+  background-color: #218838;
+}
+/* General Modal Styling */
+#messageModal {
+  font-family: Arial, sans-serif;
+  color: #000; /* Black text for maximum contrast */
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.7); /* Dark background for emphasis */
+}
+
+/* Modal Content Styling */
+.modal-content {
+  background-color: #fff;
+  color: #000; /* Ensure black text on white background */
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close Button */
+.modal-content .close {
+  color: #000; /* Black close icon for better visibility */
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-content .close:hover,
+.modal-content .close:focus {
+  color: #555; /* Slightly lighter when hovered */
+  text-decoration: none;
+}
+
+/* Input Fields */
+textarea,
+input[type="text"] {
+  background-color: #f8f9fa; /* Light background */
+  color: #212529; /* Dark gray text for good contrast */
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Buttons */
+.btn {
+  font-weight: bold;
+  color: #fff; /* White text for all buttons */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #0056b3; /* Strong blue */
+}
+
+.btn-primary:hover {
+  background-color: #003d80; /* Darker blue */
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Bootstrap gray */
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268; /* Darker gray */
+}
+
+.btn-success {
+  background-color: #28a745; /* Green */
+}
+
+.btn-success:hover {
+  background-color: #218838; /* Darker green */
+}
+
+/* Friend List Styling */
+#friendsList {
+  list-style-type: none;
+  padding: 0;
+  color: #000; /* Ensure black text for friend list */
+}
+
+#friendsList a {
+  color: #0056b3; /* Strong blue for links */
+  text-decoration: none;
+}
+
+#friendsList a:hover {
+  text-decoration: underline;
+  color: #003d80; /* Darker blue on hover */
+}
+
+.badge-warning {
+  background-color: #ffc107; /* Bright yellow */
+  color: #212529; /* Dark text for contrast */
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+/* General Text Styling for Accessibility */
+body, p, label {
+  color: #000; /* Use black text for all general text */
+}
+
+.card-header, .card-body, .card-header h3, .card-body h4 {
+  color: black;
+}
+
+/* Message section container styling */
+.messages-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.messages-column {
+  width: 48%; /* Ensures each column takes up almost half the width */
+}
+
+.message-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.message-list li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  word-wrap: break-word;
+  max-width: 90%;
+}
+
+.received {
+  background-color: #f1f1f1;
+  align-self: flex-start; /* Align to the left */
+  color: #333;
+}
+
+.sent {
+  background-color: #d1ecf1;
+  align-self: flex-end; /* Align to the right */
+  color: #333;
+}
+
+.message-content {
+  margin: 5px 0;
+  word-wrap: break-word;
+}
+
+.message-list li small {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+textarea, input[type="text"] {
+  margin-bottom: 10px;
+}
+
+textarea:focus, input[type="text"]:focus {
+  border-color: #007bff;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Make the chat input form more compact and neat */
+.card-header h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+#sendMessageForm .form-group label {
+  font-weight: bold;
+}
+
+#sendMessageForm .form-group input,
+#sendMessageForm .form-group textarea {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+button {
+  background-color: #007bff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

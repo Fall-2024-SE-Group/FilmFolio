@@ -66,15 +66,6 @@ class Review(db.Model):
     def __repr__(self):
         return f"{self.user_id} - {self.movieId}"
 
-class Friendship(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    friend_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    status = db.Column(db.String(20), nullable=False)  # "pending", "accepted"
-
-    def __repr__(self):
-        return f"Friendship between {self.user_id} and {self.friend_id}"
-
 class WatchHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -83,3 +74,15 @@ class WatchHistory(db.Model):
 
     def __repr__(self):
         return f"Watch History entry for user {self.user_id} and movie {self.movie_id}"
+
+class Message(db.Model):
+    __tablename__ = 'message'
+
+    id = db.Column(db.Integer, primary_key=True)
+    sender_username = db.Column(db.String(80), nullable=False)
+    recipient_username = db.Column(db.String(80), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Message({self.sender_username} -> {self.recipient_username}: {self.content[:20]})"

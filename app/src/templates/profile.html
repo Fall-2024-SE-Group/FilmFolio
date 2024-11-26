@@ -44,25 +44,77 @@ This code is licensed under MIT license (see LICENSE for details)
           alert("Error updating profile!");
         }
       });
-
-      // Send Friend Request
-      document.getElementById("friendRequestForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const friendUsername = e.target.friend_username.value;
-        const response = await fetch("/send_friend_request", {
-          method: "POST",
-          body: JSON.stringify({ friend_username: friendUsername }),
-          headers: { "Content-Type": "application/json" }
-        });
-        if (response.ok) {
-          alert("Friend request sent!");
-          e.target.reset();
-        } else {
-          alert("Error sending friend request!");
-        }
-      });
     });
+
+    $(document).ready(function () {
+  // Load messages as soon as the page loads
+  loadMessages();
+
+  // Send Message
+  $('#sendMessageForm').submit(function (e) {
+    e.preventDefault();
+
+    const recipientUsername = $('#recipientUsername').val().trim();
+    const content = $('#messageContent').val().trim();
+
+    if (!recipientUsername || !content) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    $.ajax({
+      url: '/send_message',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        recipient_username: recipientUsername,
+        content: content
+      }),
+      success: function (response) {
+        alert('Message sent successfully!');
+        $('#sendMessageForm')[0].reset();
+        loadMessages(); // Reload messages after sending
+      },
+      error: function (xhr) {
+        alert(`Error: ${xhr.responseJSON.error}`);
+      }
+    });
+  });
+
+  // Show messages
+  function loadMessages() {
+    $.ajax({
+      url: '/get_messages',
+      type: 'GET',
+      success: function (response) {
+        const { received, sent } = response;
+
+        // Populate received messages
+        const receivedList = received.map(msg => `
+          <li class="received">
+            <strong>${msg.sender}:</strong> ${msg.content} <small>(${msg.timestamp})</small>
+          </li>
+        `).join('');
+        $('#receivedMessages').html(receivedList || '<li>No received messages.</li>');
+
+        // Populate sent messages
+        const sentList = sent.map(msg => `
+          <li class="sent">
+            <strong>To ${msg.recipient}:</strong> ${msg.content} <small>(${msg.timestamp})</small>
+          </li>
+        `).join('');
+        $('#sentMessages').html(sentList || '<li>No sent messages.</li>');
+      },
+      error: function () {
+        alert('Failed to load messages.');
+      }
+    });
+  }
+});
+ 
   </script>
+
+  
 {% endblock %}
 
 {% block maincontent %}
@@ -81,7 +133,7 @@ This code is licensed under MIT license (see LICENSE for details)
         <div class="card-body">
           <!-- Profile Image with conditional URL -->
           <img 
-            src="{{ url_for('static', filename=user.profile_picture) if user.profile_picture else url_for('static', filename='default_profile_picture.png') }}" 
+            src="{{ url_for('static', filename=user.profile_picture) if user.profile_picture else url_for('static', filename='images/Popcorn-icon.png') }}" 
             alt="Profile Picture" 
             class="profile-picture" />
           <ul class="list-group list-group-flush">
@@ -95,25 +147,27 @@ This code is licensed under MIT license (see LICENSE for details)
           <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
         </div>
       </div>
-    </div>
-
     <!-- Profile Editing Modal -->
     <div id="editProfileModal" class="modal" style="display: none;">
       <div class="modal-content">
         <span class="close">&times;</span>
         <form id="updateProfileForm" enctype="multipart/form-data">
           <h4>Edit Profile</h4>
+          <label for="bio">Bio:</label>
           <textarea name="bio" placeholder="Enter bio...">{{ user.bio }}</textarea>
+          <label for="favorite_genres">Favorite Genres:</label>
           <input type="text" name="favorite_genres" value="{{ user.favorite_genres }}" placeholder="Favorite Genres (comma-separated)">
+          <label for="profile_picture">Upload Profile Picture:</label>
           <input type="file" name="profile_picture" accept="image/*">
-          <button type="submit" class="btn btn-success">Save Changes</button>
+          <button type="submit" class="btn">Save Changes</button>
         </form>
       </div>
     </div>
+    
   </div>
-</div>
 
-    <div class="col-md-12">
+
+  
       <div class="row">
         <div class="col-md-12" style="display: flex; justify-content: center; margin-top: 2%">
           <!-- Main Heading -->
@@ -149,28 +203,48 @@ This code is licensed under MIT license (see LICENSE for details)
       </div>
     </div>
 
-    <!-- Friends Section -->
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <h2>Friends</h2>
+<!-- Send Message Form -->
+<div class="container">
+  <div class="card mt-3">
+    <div class="card-header">
+      <h3>Send a Message</h3>
+    </div>
+    <div class="card-body">
+      <form id="sendMessageForm">
+        <div class="form-group">
+          <label for="recipientUsername">Recipient Username:</label>
+          <input type="text" id="recipientUsername" class="form-control" placeholder="Enter recipient username" required>
         </div>
-        <div class="card-body">
-          <ul id="friendsList">
-            {% for friend in friends %}
-              <li>{{ friend.username }} - <a href="/profile/{{ friend.id }}">View Profile</a></li>
-            {% else %}
-              <li>No friends yet. Start connecting!</li>
-            {% endfor %}
-          </ul>
-          <form id="friendRequestForm">
-            <input type="text" name="friend_username" placeholder="Enter username">
-            <button type="submit" class="btn btn-primary">Send Friend Request</button>
-          </form>
+        <div class="form-group">
+          <label for="messageContent">Message:</label>
+          <textarea id="messageContent" class="form-control" rows="3" placeholder="Enter your message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Messages Display -->
+  <div class="card mt-3">
+    <div class="card-header">
+      <h3>Messages</h3>
+    </div>
+    <div class="card-body">
+      <div class="messages-section">
+        <div class="messages-column">
+          <h4>Received Messages</h4>
+          <ul id="receivedMessages" class="message-list"></ul>
+        </div>
+        <div class="messages-column">
+          <h4>Sent Messages</h4>
+          <ul id="sentMessages" class="message-list"></ul>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+</div>
 </div>
 </body>
 {% endblock %}
