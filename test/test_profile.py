@@ -63,9 +63,7 @@ def test_update_only_bio(client):
 
     json_data = response.get_json()
 
-    
     assert response.status_code == 302
-
 
 
 def test_update_only_favorite_genres(client):
@@ -89,11 +87,7 @@ def test_update_only_favorite_genres(client):
 
     json_data = response.get_json()
 
-    
     assert response.status_code == 302
-
-
-
 
 
 def test_update_both_bio_and_favorite_genres(client):
@@ -118,9 +112,7 @@ def test_update_both_bio_and_favorite_genres(client):
 
     json_data = response.get_json()
 
-    
     assert response.status_code == 302
-
 
 
 def test_update_all_fields(client):
@@ -149,9 +141,7 @@ def test_update_all_fields(client):
 
     json_data = response.get_json()
 
-    
     assert response.status_code == 302
-
 
 
 def test_update_missing_bio(client):
@@ -175,9 +165,7 @@ def test_update_missing_bio(client):
 
     json_data = response.get_json()
 
-    
     assert response.status_code == 302
-
 
 
 def test_update_missing_favorite_genres(client):
@@ -199,6 +187,4 @@ def test_update_missing_favorite_genres(client):
 
     json_data = response.get_json()
 
-    
     assert response.status_code == 302
-
