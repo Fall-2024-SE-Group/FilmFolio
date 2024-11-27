@@ -133,7 +133,7 @@ FilmFolio is a dynamic project with endless possibilities for expansion and enha
 
 ## Chat Screenshot
 
-<img src="chat_image.jpeg" width="150"> 
+<img src="chat_image.jpeg" width="250"> 
 
 ## Contribute to the Project!
 
