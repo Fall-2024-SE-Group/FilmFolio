@@ -199,51 +199,51 @@ Follow these steps to install Docker on your system and run the project.
 2.  **Install Prerequisites**:
 
 
-   ```bash
-    `sudo apt install -y\
-        ca-certificates\
-        curl\
-        gnupg\
-        lsb-release`
-   ```
+      ```bash
+       sudo apt install -y\
+           ca-certificates\
+           curl\
+           gnupg\
+           lsb-release`
+    
 3.  **Add Docker's Official GPG Key**:
+   
+      ```bash
+       sudo mkdir -p /etc/apt/keyrings
+       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg`
 
-    ```bash
-   `sudo mkdir -p /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg`
-    ```
 
 3.  **Set Up Docker Repository**:
 
-    ```bash
-    `echo\
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu\
-      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`
-   ```
+       ```bash
+       echo\
+         "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu\
+         $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`
+
 
 4.  **Install Docker Engine**:
 
-    ```bash
-    `sudo apt update
-    sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
-   ```
+       ```bash
+       sudo apt update
+       sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
+
 
 5.  **Verify Installation**:
 
     -   Run the following commands:
 
         ```bash
-        `docker --version
+        docker --version
         docker run hello-world`
-      ```
+
 
 6.  **(Optional) Add Your User to Docker Group**:
 
     -   To run Docker commands without `sudo`:
 
         ```bash
-        `sudo usermod -aG docker $USER`
-         ```
+        sudo usermod -aG docker $USER`
+
     -   Log out and back in for the changes to take effect.
 
 * * * * *
@@ -264,36 +264,35 @@ Once Docker is installed, follow these steps to run the project:
     https://github.com/Fall-2024-SE-Group/FilmFolio/
 
 2.  **Build the Docker Image**: Run the following command to build the Docker image:
+   
+          docker build -t filmfolio:latest .
 
-   ```bash
-    `docker build -t filmfolio:latest .`
-   ```
 
 4.  **Run the Docker Container**: Use the following command to start the project:
 
-    ```bash
-    `docker run -d -p 8000:8000 filmfolio:latest`
-      ```
-    -   This will map port `8000` on your machine to port `8000` in the container.
+         docker run -d -p 8000:8000 filmfolio:latest
+
+       -   This will map port 8000 on your machine to port 8000 in the container.
 
 5.  **Access the Application**: Open your browser and go to:
 
-    `http://localhost:8000`
+             http://localhost:8000
 
 6.  **Stopping the Container**:
     -   To get the container ID
          ```bash
-        `docker ps
-        docker stop <container_id_or_name>`
+        docker ps
+        docker stop <container_id_or_name>
     -   To stop the running container:
-         docker stop <container_id_or_name>`
+         docker stop <container_id_or_name>
 
 
 7.  **Rebuilding After Code Changes**: If you make changes to the code, rebuild the Docker image:
 
-   ```bash
-    `docker build -t filmfolio:latest .`
-   ```
+   
+          docker build -t filmfolio:latest .
+
+    
 ## Maintaining Database file
 
 To create/add new tables, run the following commands before starting the server:
