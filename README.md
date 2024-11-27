@@ -126,24 +126,14 @@ View our documentation outlining each class and function of FilmFolio here
 
 ## Future Scope
 FilmFolio is a dynamic project with endless possibilities for expansion and enhancement. Here are some exciting avenues for future development:
-1. Social Integration :
-  Add sharing options for movie lists on social media, 
-  Introduce forums for discussions and a custom watchlist,
-  Enable virtual movie-watching parties with synchronized playback.
-2. Data-Driven Features :
-  Show real-time trending movies and insights,
-  Summarize user reviews with sentiment analysis,
-  Include diversity ratings for representation in movies.
-3. Advanced Search and Filtering :
-  Offer unique filters like “feel-good” or “plot twists”,
-  Add IMDb, Rotten Tomatoes ratings for sorting,
-  Use voice/AI search for quotes or plot-based finds.
-
-
-
-
-
-
+- Mobile App Launch:
+  Develop and release a mobile version for iOS and Android for better accessibility.. 
+- AI-Driven Analytics: :
+  Integrate analytics for portfolio performance, trends in user engagement, and personalized recommendations. 
+- Media Handling:
+  Build robust media upload, encoding, and streaming pipelines using FFmpeg or third-party APIs (e.g., AWS MediaConvert). 
+- Advanced Recommendation Engine :
+  Implement collaborative filtering (e.g., Matrix Factorization) and content-based filtering to recommend movies based on user preferences and viewing history.
 
 
 
