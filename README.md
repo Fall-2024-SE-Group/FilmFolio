@@ -137,6 +137,9 @@ FilmFolio is a dynamic project with endless possibilities for expansion and enha
 
 <img src="chat_image.jpeg" width="350"> 
 
+## Code coverage
+![image](https://github.com/user-attachments/assets/e89fc05a-0189-4754-b26c-f439adae5b26)
+
 ## Contribute to the Project!
 
 Please refer to the [CONTRIBUTING.md](https://github.com/Fall-2024-SE-Group/FilmFolio/blob/master/CONTRIBUTING.md) if you want to contribute to the FilmFolio source code. Follow all the guidelines mentioned in the same and raise a pull request, we would love to look at it ❤️❤️!
