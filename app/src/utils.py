@@ -1,6 +1,7 @@
 """
 Utility functions for handling genres, email notifications, and feedback.
 """
+
 # pylint: disable=cyclic-import
 
 import logging

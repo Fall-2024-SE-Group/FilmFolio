@@ -77,6 +77,7 @@ class WatchHistory(db.Model):
     """
     Watch history
     """
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey("movie.movieId"), nullable=False)
@@ -90,6 +91,7 @@ class Message(db.Model):
     """
     Message table.
     """
+
     __tablename__ = "message"
 
     id = db.Column(db.Integer, primary_key=True)

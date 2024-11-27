@@ -2,7 +2,6 @@
 This module initializes the database for the application.
 """
 
-
 import os
 import sys
 from src import app, socket  # Import initialized components and routes

@@ -1,6 +1,7 @@
 """
 This module contains functions for item-based movie recommendations logic.
 """
+
 import os
 
 import pandas as pd

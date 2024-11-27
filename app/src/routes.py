@@ -1,6 +1,7 @@
 """
 This module defines the routes for the Flask application.
 """
+
 import json
 import os
 import requests
@@ -505,7 +506,10 @@ def delete_message(message_id):
         return jsonify({"error": "Message not found"}), 404
 
     # Only allow the sender or recipient to delete the message
-    if current_user.username not in (message.sender_username, message.recipient_username):
+    if current_user.username not in (
+        message.sender_username,
+        message.recipient_username,
+    ):
         return (
             jsonify({"error": "You do not have permission to delete this message"}),
             403,

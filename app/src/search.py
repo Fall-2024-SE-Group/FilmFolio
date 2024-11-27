@@ -1,6 +1,7 @@
 """
 This module handles movie search functionality.
 """
+
 import os
 
 import pandas as pd
