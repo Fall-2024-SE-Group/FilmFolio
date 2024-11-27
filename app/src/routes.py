@@ -359,7 +359,7 @@ def movie_page():
             "genres": movie_object.genres,
             "imdb_id": movie_object.imdb_id,
         }
-        
+
         # Get all reviews for each movie
         reviews_objects = Review.query.filter_by(movieId=movie_object.movieId).all()
 
