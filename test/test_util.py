@@ -4,6 +4,7 @@ This code is licensed under MIT license (see LICENSE for details)
 
 @author: PopcornPicks
 """
+
 # pylint: disable=wrong-import-position
 # pylint: disable=wrong-import-order
 # pylint: disable=import-error
