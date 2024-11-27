@@ -9,7 +9,7 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 [![Closed Issues](https://img.shields.io/github/issues-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/issues?q=is%3Aissue+is%3Aclosed)
 [![Open PRs](https://img.shields.io/github/issues-pr/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls)
 [![Closed PRs](https://img.shields.io/github/issues-pr-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls?q=is%3Apr+is%3Aclosed)
-[![code-coverage](https://img.shields.io/badge/code--coverage-64%25-green)](test_coverage.jpg)
+[![code-coverage](https://img.shields.io/badge/code--coverage-64%25-green)](newtest_coverage.png)
 [![License](https://img.shields.io/github/license/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/blob/main/LICENSE)
 [![Pylint](https://img.shields.io/badge/pylint-9.99%2F10-green)](https://www.pylint.org/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
