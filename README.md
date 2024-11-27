@@ -135,7 +135,9 @@ FilmFolio is a dynamic project with endless possibilities for expansion and enha
 - Advanced Recommendation Engine :
   Implement collaborative filtering (e.g., Matrix Factorization) and content-based filtering to recommend movies based on user preferences and viewing history.
 
+## Chat Screenshot
 
+<img src="chat_image.jpeg" width="150"> 
 
 ## Contribute to the Project!
 
