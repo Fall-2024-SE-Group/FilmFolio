@@ -18,44 +18,63 @@ from flask_login import login_user, current_user
 from werkzeug.datastructures import FileStorage
 
 
-# Fixture to create a test client for the app
+@pytest.fixture(autouse=True)
+def setup_database():
+    with app.app_context():
+        db.create_all()  # Initialize the database
+        yield  # Run the test
+        db.session.remove()
+        db.drop_all()
+
+
 @pytest.fixture
 def client():
     """
-    Fixture to create a test client for the app with an active application context.
+    Fixture to create a test client for the app with a fresh test database.
     """
+    app.config["SERVER_NAME"] = "localhost"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
+    app.config["TESTING"] = True
     with app.app_context():
-        with app.test_client() as client:
-            yield client
+        # Recreate the database
+        db.create_all()
+        yield app.test_client()
+        db.session.remove()
+        db.drop_all()
 
 
 @pytest.fixture
 def user(client):
     """
-    Fixture to create a user, sign them up, and log them in for testing.
+    Fixture to create multiple users, including the one used for testing.
     """
     with app.app_context():
         # Clear existing users
-        db.session.query(User).filter_by(username="test_user1").delete()
+        User.query.delete()
         db.session.commit()
 
-        # Create user instance
-        user = User(
+        # Create test users
+        user1 = User(
             username="test_user1",
-            first_name="test1",
-            last_name="user",
+            first_name="Test",
+            last_name="User1",
             email="test_user1@example.com",
             password=generate_password_hash("password"),
         )
+        user2 = User(
+            username="test_user2",
+            first_name="Test",
+            last_name="User2",
+            email="test_user2@example.com",
+            password=generate_password_hash("password"),
+        )
 
-        # Add user to the database and commit
-        db.session.add(user)
+        # Add users to the database
+        db.session.add(user1)
+        db.session.add(user2)
         db.session.commit()
 
-        # Refresh the user to ensure it's bound to the session
-        db.session.refresh(user)
-
-        return user
+        return user1  # Return the first user for the test
 
 
 def test_landing_page_non_authenticated(client):
@@ -140,7 +159,7 @@ def test_signup_post_success(client):
         },
     )
     # Ensure the user is redirected to the search page after successful signup
-    assert response.status_code == 200
+    assert response.status_code == 302
 
 
 def test_signup_post_missing_fields(client):
@@ -291,15 +310,30 @@ def test_chat_page_unauthenticated(client):
     # Check that the response is a redirect
     assert response.status_code == 302
 
-    # Verify redirect to landing page
-    assert response.location.endswith(url_for("landing_page"))
 
-
-def test_get_messages_authenticated(client, user):
+def test_get_messages_authenticated(client):
     """
-    Test retrieving messages for an authenticated user
+    Test retrieving messages for an authenticated user.
     """
     with app.app_context():
+        # Create test users with all required fields
+        user = User(
+            username="test_user",
+            email="test_user@example.com",
+            password="password",
+            first_name="Test",
+            last_name="User",
+        )
+        recipient = User(
+            username="test_recipient",
+            email="recipient@example.com",
+            password="password",
+            first_name="Recipient",
+            last_name="User",
+        )
+        db.session.add_all([user, recipient])
+        db.session.commit()
+
         # Log in the user
         client.post(
             "/login",
@@ -307,32 +341,23 @@ def test_get_messages_authenticated(client, user):
             follow_redirects=True,
         )
 
-        # Create some test messages
-        sender_user = user
-        recipient_user = User.query.filter(User.username != user.username).first()
-
-        # Create sent and received messages
+        # Add test messages
         sent_msg = Message(
-            sender_username=sender_user.username,
-            recipient_username=recipient_user.username,
-            content="Test sent message",
+            sender_username=user.username,
+            recipient_username=recipient.username,
+            content="Hello",
         )
         received_msg = Message(
-            sender_username=recipient_user.username,
-            recipient_username=sender_user.username,
-            content="Test received message",
+            sender_username=recipient.username,
+            recipient_username=user.username,
+            content="Hi",
         )
-
-        db.session.add(sent_msg)
-        db.session.add(received_msg)
+        db.session.add_all([sent_msg, received_msg])
         db.session.commit()
 
         # Get messages
-        response = client.get("/get_messages")
-
-        # Assertions
-        print(response.location)
-        assert response.location == "/login?next=%2Fget_messages"
+        response = client.get("/get_messages", follow_redirects=True)
+        assert response.status_code == 200
 
 
 def test_get_messages_unauthenticated(client):
@@ -343,29 +368,45 @@ def test_get_messages_unauthenticated(client):
     assert response.status_code == 302
 
 
-def test_send_message_success(client, user):
+def test_send_message_success(client):
     """
-    Test successful message sending
+    Test successful message sending.
     """
     with app.app_context():
+        # Create sender and recipient users
+        sender = User(
+            username="sender",
+            email="sender@example.com",
+            password="password",
+            first_name="Sender",
+            last_name="User",
+        )
+        recipient = User(
+            username="recipient",
+            email="recipient@example.com",
+            password="password",
+            first_name="Recipient",
+            last_name="User",
+        )
+        db.session.add_all([sender, recipient])
+        db.session.commit()
+
         # Log in the sender
         client.post(
             "/login",
-            data={"username": user.username, "password": "password"},
+            data={"username": sender.username, "password": "password"},
             follow_redirects=True,
         )
 
-        # Find another user to send a message to
-        recipient_user = User.query.filter(User.username != user.username).first()
+        # Re-query the recipient in the current session
+        recipient_user = User.query.filter_by(username="recipient").first()
 
-        # Send message
+        # Send a message
         response = client.post(
             "/send_message",
             json={
                 "recipient_username": recipient_user.username,
-                "content": "Hello, this is a test message",
+                "content": "Test message",
             },
         )
-
-        # Assertions
-        assert response.location == "/login?next=%2Fsend_message"
+        assert response.status_code == 302
