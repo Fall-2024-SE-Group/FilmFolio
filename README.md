@@ -28,7 +28,7 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 
 - [Why use FilmFolio?](#why-use-filmfolio)
 - [Project Documentation](#documentation)
-- [Project Presentation Videos](#project-presentation-video)
+- [Project Presentation Videos](#project-presentation-videos)
 - [Brief Overview of Project](#project-description)
 - [What Docs](#what-docs)
 - [TechStack Used for the Development of Project](#tech-stack-used)
@@ -60,7 +60,7 @@ FilmFolio: Your movie recommender! Input movies, get tailored suggestions, and s
 ## Documentation
 Checkout for project documentation [here](https://github.com/Fall-2024-SE-Group/FilmFolio/tree/master/docs)
 
-## Project Description
+## Project Presentation Videos
 
 
 ## Project Description
