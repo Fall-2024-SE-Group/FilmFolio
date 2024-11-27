@@ -120,17 +120,17 @@ View our documentation outlining each class and function of FilmFolio here
 
 ## Future Scope
 FilmFolio is a dynamic project with endless possibilities for expansion and enhancement. Here are some exciting avenues for future development:
-1. Social Integration
-  Add sharing options for movie lists on social media.
-  Introduce forums for discussions and custom watchlists.
+1. Social Integration :
+  Add sharing options for movie lists on social media, 
+  Introduce forums for discussions and a custom watchlist,
   Enable virtual movie-watching parties with synchronized playback.
-2. Data-Driven Features
-  Show real-time trending movies and insights.
-  Summarize user reviews with sentiment analysis.
+2. Data-Driven Features :
+  Show real-time trending movies and insights,
+  Summarize user reviews with sentiment analysis,
   Include diversity ratings for representation in movies.
-3. Advanced Search and Filtering
-  Offer unique filters like “feel-good” or “plot twists.”
-  Add IMDb, Rotten Tomatoes ratings for sorting.
+3. Advanced Search and Filtering :
+  Offer unique filters like “feel-good” or “plot twists”,
+  Add IMDb, Rotten Tomatoes ratings for sorting,
   Use voice/AI search for quotes or plot-based finds.
 
 
