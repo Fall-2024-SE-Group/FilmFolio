@@ -332,7 +332,6 @@ def test_get_messages_authenticated(client, user):
 
         # Assertions
         print(response.location)
-        db.session.query(Review).filter_by(username="test_user1").delete()
         assert response.location == "/login?next=%2Fget_messages"
 
 
