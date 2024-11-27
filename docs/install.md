@@ -1,4 +1,5 @@
-## Installation Guide
+
+# Installation Guide
 
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:
@@ -6,7 +7,7 @@ Before you begin, ensure you have met the following requirements:
 - **Operating System:** Windows, macOS, Linux
 - **Web Browser:** A modern web browser (e.g., Google Chrome, Mozilla Firefox, Safari)
 
-***Install Python***:
+## Install Python:
 ### Windows
 1. **Download Python:**
    Download the Windows installer for the Python version you desire from [Python Downloads](https://www.python.org/downloads/). Based on your operating system, you can download and install Python's latest or older versions. Make sure to download the python version  - 3.10
@@ -54,9 +55,7 @@ python3 --version
 
 ## Follow these steps to install the project:
 
-### Installing
-
-*1. Clone the Repository* - Start by cloning the repository to your local machine. 
+### 1. Clone the Repository* - Start by cloning the repository to your local machine. 
   
 ``` bash
     git clone https://github.com/Fall-2024-SE-Group/FilmFolio.git
@@ -67,13 +66,13 @@ python3 --version
     https://github.com/Fall-2024-SE-Group/FilmFolio/
 
 
-*2. Navigate into the project directory*
+### 2. Navigate into the project directory*
 
 ``` bash
 cd FilmFolio/
 ```
 
-*3. Setting up the virtual python environment*
+### 3. Setting up the virtual python environment*
 ```bash
 python -m venv venv
 ```
@@ -81,7 +80,7 @@ python -m venv venv
 .\venv\Scripts\activate
 ```
 
-*4. Get a TMDB API Key*
+### 4. Get a TMDB API Key*
 To get an API Key from TMDB:
 
 - Go to the TMDB Website and sign up.
@@ -89,7 +88,7 @@ To get an API Key from TMDB:
 - Go to the API section, and under the Request an API Key section, click on the link.
 - Register for an API key, agree to the terms of use, and fill in the required information.
 
-*5: Create a .env File with Your TMDB API Key*
+### 5: Create a .env File with Your TMDB API Key*
 
 Create a .env file in the src folder with the following content:
 
@@ -97,7 +96,7 @@ Create a .env file in the src folder with the following content:
     TMDB_API_KEY=YOUR_TMDB_API_KEY
     Replace YOUR_TMDB_API_KEY with the actual API key you obtained from TMDB.
 
-*6. Install dependencies*
+### 6. Install dependencies*
 
 ``` bash
 pip install --upgrade pip
@@ -106,34 +105,34 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-*7. Navigate to entry folder*
+### 7. Navigate to entry folder*
 
 ``` bash
 cd app/
 ```
 
-*8. Set up the database*
+### 8. Set up the database*
 ``` bash
 python init_db.py
 
-*9. Run the application*
+### 9. Run the application*
 ``` bash
 python run.py
 ```
-*10 Open the Application in Your Browser*
+### 10 Open the Application in Your Browser*
 
 After starting the server, open the following URL in your browser:
 
       http://127.0.0.1:8000/
     
    
-# Docker Installation Guide
+## Docker Installation Guide
 
 Follow these steps to install Docker on your system and run the project.
 
 ---
 
-## **Installing Docker**
+**Installing Docker**
 
 ### **For Windows**
 
