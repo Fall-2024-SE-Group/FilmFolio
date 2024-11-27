@@ -134,9 +134,9 @@ Please refer to the [CONTRIBUTING.md](https://github.com/Fall-2024-SE-Group/Film
 <table>
   <tr>
     <td><a href="https://github.com/Fall-2024-SE-Group/FilmFolio/">Project 2</a></td>
-    <td align="center"><a href="https://github.com/surabhi1914/"><br /><sub><b>Surabhi Nair</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/Hasitha257/"><br /><sub><b>Aarthi Hasitha Yepuri</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/Sreeja-Nukarapu/"><br /><sub><b>Sreeja Nukarapu</b></sub></a><br /></td>
+    <td ><a href="https://github.com/surabhi1914/">Surabhi Nair</a></td>
+    <td ><a href="https://github.com/Hasitha257/">Aarthi Hasitha Yepuri</a></td>
+    <td ><a href="https://github.com/Sreeja-Nukarapu/">Sreeja Nukarapu</a></td>
   </tr>
 </table>
 
