@@ -11,7 +11,6 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 [![Closed PRs](https://img.shields.io/github/issues-pr-closed/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/pulls?q=is%3Apr+is%3Aclosed)
 [![License](https://img.shields.io/github/license/Fall-2024-SE-Group/FilmFolio)](https://github.com/Fall-2024-SE-Group/FilmFolio/blob/main/LICENSE)
 [![Pylint](https://img.shields.io/badge/pylint-9.99%2F10-green)](https://www.pylint.org/)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/Fall-2024-SE-Group/FilmFolio)](https://codeclimate.com/github/Fall-2024-SE-Group/FilmFolio)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
 [![Flake8 Config](https://img.shields.io/badge/config-.flake8-blue)](https://github.com/Fall-2024-SE-Group/FilmFolio/actions/workflows/flake8.yml)
