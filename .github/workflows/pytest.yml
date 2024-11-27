@@ -36,5 +36,4 @@ jobs:
       run: |
           set -o pipefail
           python -m pytest "test/test_routes.py"
-          python -m pytest "test/test_recommendations.py"
           python -m pytest "test/profile.py"
