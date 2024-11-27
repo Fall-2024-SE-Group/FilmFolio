@@ -31,11 +31,6 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 - [Project Presentation Videos](#project-presentation-video)
 - [Brief Overview of Project](#project-description)
 - [What Docs](#what-docs)
-- [How Docs](#how-docs)<br/>
-    - [Recommendation Mechanism](#movie-recommendation-mechanism)<br/>
-    - [Create an Acccount](#create-an-account)
-    - [Login to Account](#login-to-account)
-    - [Profile and Friends](#profile-and-friends)
 - [TechStack Used for the Development of Project](#tech-stack-used)
 - [Steps for Execution](#getting-started)
 - [Future Scope](#future-scope)
@@ -64,6 +59,8 @@ FilmFolio: Your movie recommender! Input movies, get tailored suggestions, and s
 
 ## Documentation
 Checkout for project documentation [here](https://github.com/Fall-2024-SE-Group/FilmFolio/tree/master/docs)
+
+## Project Description
 
 
 ## Project Description
