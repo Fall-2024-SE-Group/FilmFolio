@@ -346,8 +346,10 @@ def movie_page():
     """
     Get movies and their reviews
     """
+    # Get all movies
     movies_ojbects = Movie.query.all()
     movies = []
+
     for movie_object in movies_ojbects:
         reviews = []
         obj1 = {
@@ -357,17 +359,33 @@ def movie_page():
             "genres": movie_object.genres,
             "imdb_id": movie_object.imdb_id,
         }
+        
+        # Get all reviews for each movie
         reviews_objects = Review.query.filter_by(movieId=movie_object.movieId).all()
+
         for review_object in reviews_objects:
+            # Retrieve user for each review
             user = User.query.filter_by(id=review_object.user_id).first()
-            obj2 = {
-                "username": user.username,
-                "name": f"{user.first_name} {user.last_name}",
-                "review_text": review_object.review_text,
-            }
+
+            # If user is found, get their info
+            if user:
+                obj2 = {
+                    "username": user.username,
+                    "name": f"{user.first_name} {user.last_name}",
+                    "review_text": review_object.review_text,
+                }
+            else:
+                obj2 = {
+                    "username": "Anonymous",
+                    "name": "Anonymous User",
+                    "review_text": review_object.review_text,
+                }
+
             reviews.append(obj2)
+
         obj1["reviews"] = reviews
         movies.append(obj1)
+
     return render_template("movie.html", movies=movies, user=current_user)
 
 

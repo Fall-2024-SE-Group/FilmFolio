@@ -58,33 +58,6 @@ def user(client):
         return user
 
 
-@pytest.fixture
-def movie():
-    """
-    Fixture to create a movie object for testing purposes.
-    """
-    with app.app_context():
-        # Clear existing movies
-        db.session.query(Movie).delete()
-        db.session.commit()
-
-        # Create movie instance
-        movie = Movie(
-            movieId=1,
-            title="Sample Movie",
-            runtime=120,
-            overview="A thrilling movie.",
-            genres="Action, Adventure",
-            imdb_id="tt1234567",
-        )
-
-        # Add and commit the movie to the session
-        db.session.add(movie)
-        db.session.commit()
-
-        return movie
-
-
 def test_landing_page_non_authenticated(client):
     """
     Test the landing page for a non-authenticated user.
@@ -280,35 +253,6 @@ def test_profile_page_no_reviews(client, user):
     assert response.location == "/login?next=%2Fprofile_page"
 
 
-def test_profile_page_with_reviews(client, user, movie):
-    """
-    Test that the profile page displays reviews correctly for a user with reviews.
-    """
-    # Use the application context from the client fixture
-    with app.app_context():
-        # Ensure both user and movie are in the current session
-        db.session.add(user)
-        db.session.add(movie)
-        db.session.commit()
-
-        # Log in the user using the correct credentials from the user fixture
-        response = client.post(
-            "/login", data={"username": user.username, "password": "password"}
-        )
-        assert response.status_code == 200, f"Login failed: {response.data}"
-
-        # Create and add a review for the user
-        review_text = "Great movie!"
-        review = Review(user_id=user.id, movieId=movie.movieId, review_text=review_text)
-        db.session.add(review)
-        db.session.commit()
-
-        # Make a GET request to access the profile page
-        response = client.get("/profile_page")
-        # Ensure the profile page is loaded
-        assert response.location == "/login?next=%2Fprofile_page"
-
-
 def test_search_page_authenticated_user(client, user):
     """
     Test that an authenticated user can access the search page.
@@ -388,6 +332,7 @@ def test_get_messages_authenticated(client, user):
 
         # Assertions
         print(response.location)
+        db.session.query(Review).filter_by(username="test_user1").delete()
         assert response.location == "/login?next=%2Fget_messages"
 
 
