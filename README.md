@@ -26,10 +26,6 @@ Welcome to **FilmFolio**, your ultimate movie cataloging tool! FilmFolio helps y
 <img src="https://github.com/sE-Group-AR/FilmFolio/blob/master/asset/movies-list.gif" alt="drawing" style="width:1000px;"/>
 <b>FilmFolio is more than just a movie recommender system; it's a gateway to a world of cinematic adventures. With an ever-expanding library of films and a powerful recommendation algorithm, FilmFolio is here to transform the way you discover, enjoy, and connect with movies.</b>
 
-Chat Group:
-
-<img src="chat_image.jpeg" width="150"> 
-
 # Contents  
 
 - [Why use FilmFolio?](#why-use-filmfolio)
