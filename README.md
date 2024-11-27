@@ -65,6 +65,7 @@ Checkout for project documentation [here](https://github.com/Fall-2024-SE-Group/
 
 ## Project Presentation Videos
 
+https://drive.google.com/file/d/1tz2_U2wO5CRY2-2nTAiCEvw4_zZkx1Hm/view?usp=sharing
 
 ## Project Description
 FilmFolio is a user-friendly movie recommender that curates a tailored list of 10 movie predictions based on user-provided movie preferences. Users can input their favorite movies, and our algorithm refines recommendations based on feedback—Liked, Disliked, or Yet To Watch. Additionally, FilmFolio offers the convenience of emailing the recommended movies, enhancing the movie-watching experience. For the system architecture and other details, please refer to our documentation [here](https://github.com/Fall-2024-SE-Group/FilmFolio/tree/master/docs)
