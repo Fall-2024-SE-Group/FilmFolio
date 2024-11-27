@@ -16,4 +16,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pyyaml  # Install Flake8 and PyYAML
       - name: Run Flake8
-        run: python app/test/run_flake8.py
+        run: python test/run_flake8.py

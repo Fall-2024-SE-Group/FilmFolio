@@ -1,3 +1,6 @@
+"""
+setting up the database
+"""
 from src import app, db
 
 with app.app_context():

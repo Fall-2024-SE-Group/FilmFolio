@@ -1,4 +1,8 @@
+"""
+This module handles movie search functionality.
+"""
 import os
+
 import pandas as pd
 
 # from flask import jsonify, request, render_template

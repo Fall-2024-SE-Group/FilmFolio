@@ -1,10 +1,13 @@
+"""
+Utility functions for handling genres, email notifications, and feedback.
+"""
 # pylint: disable=cyclic-import
 
 import logging
 import smtplib
-from smtplib import SMTPException
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from smtplib import SMTPException
 
 import pandas as pd
 

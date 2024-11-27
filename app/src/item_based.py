@@ -1,4 +1,8 @@
+"""
+This module contains functions for item-based movie recommendations logic.
+"""
 import os
+
 import pandas as pd
 
 app_dir = os.path.dirname(os.path.abspath(__file__))

@@ -1,20 +1,15 @@
 # pylint: disable=cyclic-import
 """
-Copyright (c) 2024 Anchita Ramani, Meet Patel, Abhinav Jami
-This code is licensed under MIT license (see LICENSE for details)
-
-@author: FilmFolio
+This module initializes the database for the application.
 """
 
 from flask import Flask
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from flask_socketio import SocketIO
-
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "5791628bb0b13ce0c676dfde280ba245"

@@ -1,8 +1,13 @@
+"""
+This module defines the database models for the application.
+"""
+
+from datetime import datetime
+
 from flask_login import (
     UserMixin,
 )  # usermixin - Provides default implementations for user authentication
 from src import db, login_manager
-from datetime import datetime
 
 
 @login_manager.user_loader  # Retrieves the user record from the database based on the ID
@@ -69,6 +74,9 @@ class Review(db.Model):
 
 
 class WatchHistory(db.Model):
+    """
+    Watch history
+    """
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey("movie.movieId"), nullable=False)
@@ -79,6 +87,9 @@ class WatchHistory(db.Model):
 
 
 class Message(db.Model):
+    """
+    Message table.
+    """
     __tablename__ = "message"
 
     id = db.Column(db.Integer, primary_key=True)

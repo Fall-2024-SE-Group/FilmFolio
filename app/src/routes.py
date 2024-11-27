@@ -1,24 +1,27 @@
+"""
+This module defines the routes for the Flask application.
+"""
 import json
 import os
 import requests
-
-from werkzeug.utils import secure_filename
-from flask import render_template, url_for, redirect, request, jsonify, flash
-from flask_login import login_user, current_user, logout_user, login_required
-from flask_socketio import emit
 from dotenv import load_dotenv
-from src import app, db, bcrypt, socket
-from src.search import Search
+from flask import jsonify, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+from flask_socketio import emit
+from src import app, bcrypt, db, socket
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review, WatchHistory, Message
-from markupsafe import escape
-from datetime import datetime
+from src.models import Message, Movie, Review, User, WatchHistory
+from src.search import Search
+from werkzeug.utils import secure_filename
 
 app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "static/images/")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
 
 def allowed_file(filename):
+    """
+    allowed file
+    """
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
@@ -427,6 +430,9 @@ def fetch_trending_movies():
 @app.route("/get_messages", methods=["GET"])
 @login_required
 def get_messages():
+    """
+    Handles loading the messages
+    """
     username = current_user.username
 
     # Retrieve messages where the user is either sender or recipient
@@ -460,6 +466,9 @@ def get_messages():
 @app.route("/send_message", methods=["POST"])
 @login_required
 def send_message():
+    """
+    Handles sending messages
+    """
     data = request.get_json()
     sender_username = current_user.username  # Get the logged-in user's username
     recipient_username = data.get("recipient_username")
@@ -488,15 +497,15 @@ def send_message():
 @app.route("/delete_message/<int:message_id>", methods=["DELETE"])
 @login_required
 def delete_message(message_id):
+    """
+    Handles deleting the messages
+    """
     message = Message.query.get(message_id)
     if not message:
         return jsonify({"error": "Message not found"}), 404
 
     # Only allow the sender or recipient to delete the message
-    if (
-        message.sender_username != current_user.username
-        and message.recipient_username != current_user.username
-    ):
+    if current_user.username not in (message.sender_username, message.recipient_username):
         return (
             jsonify({"error": "You do not have permission to delete this message"}),
             403,

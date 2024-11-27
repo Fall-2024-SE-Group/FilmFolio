@@ -1,15 +1,15 @@
-import sys
-import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+"""
+This module initializes the database for the application.
+"""
 
+
+import os
+import sys
+from src import app, socket  # Import initialized components and routes
 
 # Ensure the app can find the `src` package
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src import app, db, routes  # Import initialized components and routes
-from src import socket
 
 # Run the app
 if __name__ == "__main__":

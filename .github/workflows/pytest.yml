@@ -35,4 +35,4 @@ jobs:
     - name: Test with pytest
       run: |
           set -o pipefail
-          python -m pytest "app/tests/test_routes.py"
+          python -m pytest "tests/test_routes.py"
